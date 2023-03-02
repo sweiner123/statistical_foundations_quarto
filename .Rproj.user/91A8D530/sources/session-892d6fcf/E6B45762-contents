@@ -1,0 +1,28 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Statistical Foundations"
+  author: "IAA Faculty"
+  date: "3/2/2023"
+  chapters:
+    - index.qmd
+    - 01-introduction_statistics.qmd
+    - 02-introduction_ANOVA_regression.qmd
+    - 03-complex_ANOVA_Regression.qmd
+    - 04-model_selection.qmd
+    - 05-diagnostics.qmd
+    - 06-model_building_scoring.qmd
+    - 07-categorical.qmd
+
+format:
+  html:
+    theme: 
+      - cosmo
+      - style.css
+  pdf:
+    documentclass: scrreprt
+
+editor: visual
+

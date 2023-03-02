@@ -1,0 +1,74 @@
+{
+    "entries": [
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "fig",
+            "id": "overhistogramdensitykernel",
+            "suffix": "",
+            "title": "'Histogram: Density of Sale_Price for varying qualities of home exterior'"
+        },
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "sec",
+            "id": "posthoc",
+            "suffix": "",
+            "title": "ANOVA Post-hoc Testing"
+        },
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "sec",
+            "id": "tukey",
+            "suffix": "",
+            "title": "Tukey-Kramer"
+        },
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "sec",
+            "id": "trainvalidtest",
+            "suffix": "",
+            "title": "Honest Assessment"
+        },
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "eq",
+            "id": "correlation",
+            "suffix": "",
+            "title": ""
+        },
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "sec",
+            "id": "evp",
+            "suffix": "",
+            "title": "Prediction vs. Explanation"
+        },
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "eq",
+            "id": "linmod",
+            "suffix": "",
+            "title": ""
+        },
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "sec",
+            "id": "slr",
+            "suffix": "",
+            "title": "Introduction to ANOVA and Linear Regression"
+        },
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "fig",
+            "id": "correlation",
+            "suffix": "",
+            "title": "‘Examples of relationships and their associated correlations’"
+        },
+        {
+            "file": "02-introduction_ANOVA_regression.qmd",
+            "type": "eq",
+            "id": "veccorrelation",
+            "suffix": "",
+            "title": ""
+        }
+    ]
+}

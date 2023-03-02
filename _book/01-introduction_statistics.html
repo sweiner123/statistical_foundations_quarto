@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Statistical Foundations - 2&nbsp; Introduction to Statistics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./02-introduction_ANOVA_regression.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistics</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Statistical Foundations</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Statistical Foundations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-introduction_statistics.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-introduction_ANOVA_regression.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to ANOVA and Linear Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-complex_ANOVA_Regression.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Complex ANOVA and Multiple Linear Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-model_selection.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model Selection</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-diagnostics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Diagnostics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-model_building_scoring.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model Building &amp; Scoring for Prediction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-categorical.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Categorical Data Analysis</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-eda" id="toc-sec-eda" class="nav-link active" data-scroll-target="#sec-eda"><span class="toc-section-number">2.1</span>  Exploratory Data Analysis (EDA)</a>
+  <ul class="collapse">
+  <li><a href="#vartypes" id="toc-vartypes" class="nav-link" data-scroll-target="#vartypes"><span class="toc-section-number">2.1.1</span>  Types of Variables</a></li>
+  <li><a href="#sec-dist" id="toc-sec-dist" class="nav-link" data-scroll-target="#sec-dist"><span class="toc-section-number">2.1.2</span>  Distributions</a></li>
+  <li><a href="#normal" id="toc-normal" class="nav-link" data-scroll-target="#normal"><span class="toc-section-number">2.1.3</span>  The Normal Distribution</a></li>
+  <li><a href="#skew" id="toc-skew" class="nav-link" data-scroll-target="#skew"><span class="toc-section-number">2.1.4</span>  Skewness</a></li>
+  <li><a href="#kurt" id="toc-kurt" class="nav-link" data-scroll-target="#kurt"><span class="toc-section-number">2.1.5</span>  Kurtosis</a></li>
+  <li><a href="#graphdist" id="toc-graphdist" class="nav-link" data-scroll-target="#graphdist"><span class="toc-section-number">2.1.6</span>  Graphical Displays of Distributions</a></li>
+  </ul></li>
+  <li><a href="#pointest" id="toc-pointest" class="nav-link" data-scroll-target="#pointest"><span class="toc-section-number">2.2</span>  Point Estimates</a></li>
+  <li><a href="#sec-ci" id="toc-sec-ci" class="nav-link" data-scroll-target="#sec-ci"><span class="toc-section-number">2.3</span>  Confidence Intervals</a></li>
+  <li><a href="#sec-hypotest" id="toc-sec-hypotest" class="nav-link" data-scroll-target="#sec-hypotest"><span class="toc-section-number">2.4</span>  Hypothesis Testing</a>
+  <ul class="collapse">
+  <li><a href="#onesample" id="toc-onesample" class="nav-link" data-scroll-target="#onesample"><span class="toc-section-number">2.4.1</span>  One-Sample T-Test</a></li>
+  </ul></li>
+  <li><a href="#two-sample-t-tests" id="toc-two-sample-t-tests" class="nav-link" data-scroll-target="#two-sample-t-tests"><span class="toc-section-number">2.5</span>  Two-Sample t-tests</a>
+  <ul class="collapse">
+  <li><a href="#sec-testnorm" id="toc-sec-testnorm" class="nav-link" data-scroll-target="#sec-testnorm"><span class="toc-section-number">2.5.1</span>  Testing Normality of Groups</a></li>
+  <li><a href="#sec-ftest" id="toc-sec-ftest" class="nav-link" data-scroll-target="#sec-ftest"><span class="toc-section-number">2.5.2</span>  Testing Equality of Variances</a></li>
+  <li><a href="#sec-tsttest" id="toc-sec-tsttest" class="nav-link" data-scroll-target="#sec-tsttest"><span class="toc-section-number">2.5.3</span>  Testing Equality of Means</a></li>
+  <li><a href="#sec-wilcoxon" id="toc-sec-wilcoxon" class="nav-link" data-scroll-target="#sec-wilcoxon"><span class="toc-section-number">2.5.4</span>  Mann-Whitney-Wilcoxon Test</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-intro-stat" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistics</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Welcome to your introduction to statistics. You will be learning the basics of statistics, along with applications of statistics within the R language. This book will provide fundamentals of the concepts and the code to apply these concepts in R.<br>
+This Chapter aims to answer the following questions:</p>
+<ul>
+<li>
+<p>What type of data is being analyzed?</p>
+<ul>
+<li>
+<p>Nominal</p>
+</li><li>
+<p>Ordinal</p>
+</li><li>
+<p>Continuous/Discrete</p>
+</li></ul>
+</li><li>
+<p>How do we describe distributions of these variables?</p>
+<ul>
+<li>
+<p>Center</p>
+</li><li>
+<p>Spread</p>
+</li><li>
+<p>Shape</p>
+</li><li>
+<p>Graphical Display</p>
+</li></ul>
+</li><li>
+<p>How do we create confidence intervals for parameters?</p>
+<ul>
+</ul>
+</li><li>
+<p>How do we perform hypothesis testing?</p>
+<ul>
+<li>
+<p>One sample t-test</p>
+</li><li>
+<p>Two sample t-test</p>
+</li><li>
+<p>Testing Normality</p>
+</li><li>
+<p>Testing Equality of Variances</p>
+</li><li>
+<p>Testing Equality of Means</p>
+</li><li>
+<p>Mann-Whitney-Wilcoxon Test</p>
+<p>The following packages will be used in this textbook. Below we install and add the packages to our libraries so that any version issues can be dealt with at the beginning of the course. Sometimes packages require that you update to the latest version of R; if you see an error that indicates that situation, download the latest version of R from <a href="https://cran.r-project.org">CRAN</a> and install it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'AmesHousing'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'tidyverse'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'car'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'DescTools'</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'corrplot'</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'mosaic'</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'modelr'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'plotly'</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'ggplot2'</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'Hmisc'</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'onehot'</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'jmuOutlier'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'leaps'</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'glmnet'</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'nortest'</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'lmtest'</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'InformationValue'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'gmodels'</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'vcdExtra'</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'TSA'</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'carData'</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'epiDisplay'</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'gridExtra'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AmesHousing)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mosaic)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelr)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Hmisc)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(onehot)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jmuOutlier)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaps)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(InformationValue)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gmodels)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcdExtra)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(TSA)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(carData)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(epiDisplay)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="sec-eda" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-eda"><span class="header-section-number">2.1</span> Exploratory Data Analysis (EDA)</h2>
+<!-- <script> -->
+<!-- var acc = document.getElementsByClassName("accordion"); -->
+<!-- var i; -->
+<!-- for (i = 0; i < acc.length; i++) { -->
+<!--   acc[i].addEventListener("click", function() { -->
+<!--     this.classList.toggle("active"); -->
+<!--     var panel = this.nextElementSibling; -->
+<!--     if (panel.style.display === "block") { -->
+<!--       panel.style.display = "none"; -->
+<!--     } else { -->
+<!--       panel.style.display = "block"; -->
+<!--     } -->
+<!--   }); -->
+<!-- } -->
+<!-- </script> -->
+<!-- <button class="accordion">R</button> -->
+<!-- <div class="panel"> -->
+<!--  <p> `R Code`</p> -->
+<!-- </div> -->
+<!-- <button class="accordion">SAS</button> -->
+<!-- <div class="panel"> -->
+<!--   <p>`SAS Code`</p> -->
+<!-- </div> -->
+<!-- <button class="accordion">Python</button> -->
+<!-- <div class="panel"> -->
+<!--   <p>`Python Code` </p> -->
+<!-- </div> -->
+<p>The crucial first step to any data science problem is exploratory data analysis (EDA). Before you attempt to run any models, or jump towards any formal statistical analysis, you must <strong><em>explore your data</em></strong>. Many unexpected frustrations arise when exploratory analysis is overlooked; knowing your data is critical to your ability to make necessary assumptions about it. This preliminary analysis will help inform our decisions for data manipulation, give us a base-level understanding of our variables and the relationships between them, and help determine which statistical analyses might be appropriate for the questions we are trying to answer. Some of the questions we aim to answer through exploratory analysis are:</p>
+<ul>
+<li>
+<p>What kind of variables to you have?</p>
+<ul>
+<li>
+<p>Continuous</p>
+</li><li>
+<p>Nominal</p>
+</li><li>
+<p>Ordinal</p>
+</li></ul>
+</li><li>
+<p>How are the attributes stored?</p>
+<ul>
+<li>
+<p>Strings</p>
+</li><li>
+<p>Integers</p>
+</li><li>
+<p>Floats/Numeric</p>
+</li><li>
+<p>Dates</p>
+</li></ul>
+</li><li>
+<p>What do their distributions look like?</p>
+<ul>
+<li>
+<p>Center/Location</p>
+</li><li>
+<p>Spread</p>
+</li><li>
+<p>Shape</p>
+</li></ul>
+</li><li>
+<p>Are there any anomolies?</p>
+<ul>
+<li>
+<p>Outliers</p>
+</li><li>
+<p>Leverage points</p>
+</li><li>
+<p>Missing values</p>
+</li><li>
+<p>Low-frequency categories</p>
+</li></ul>
+</li></ul>
+<p>Throughout the textbook, we will continue to use a real-estate data set that contains the <code>sale_price</code> and numerous physical attributes of nearly 3,000 homes in Ames, Iowa in the early 2000s. To access this data, we first add the <code>AmesHousing</code> package to our library and create the nicely formatted data with the <code>make_ordinal_ames()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AmesHousing)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">make_ordinal_ames</span>() </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="vartypes" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="vartypes"><span class="header-section-number">2.1.1</span> Types of Variables</h3>
+<p>The columns of a data set are referred to by the following <strong>equivalent terms</strong>:</p>
+</section></section></li></ul>
+</li><li>
+<p>Variables</p>
+</li><li>
+<p>Features</p>
+</li><li>
+<p>Attributes</p>
+</li><li>
+<p>Predictors/Targets</p>
+</li><li>
+<p>Factors</p>
+</li><li>
+<p>Inputs/Outputs</p>
+</li></ul>
+<p>This book may use any of these words interchangeably to refer to a quality or quantity of interest in our data.</p>
+<section id="nominal-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="nominal-variables">Nominal Variables</h4>
+<p>A <strong>nominal</strong> or <strong>categorical variable</strong> is a <em>quality of interest</em> whose values have no logical ordering. Color (“blue”, “red”, “green”…), ethnicity (“African-American”, “Asian”, “Caucasian”,…), and style of house (“ranch”, “two-story”, “duplex”, …) are all examples of nominal attributes. The categories or values that these variables can take on - those words listed in quotes and parenthesis - are called the <strong>levels</strong> of the variable.</p>
+<p>In modeling, nominal attributes are commonly transformed into <strong>dummy variables</strong>. Dummy variables are binary columns that indicate the presence or absence of a quality. There is more than one way to create dummy variables, and the treatment will be different depending on what type of model you are using. Linear regression models will use either <strong>reference-level</strong> or <strong>effects coding</strong>, whereas other machine learning models are more likely to use one-hot encoding or a variation thereof.</p>
+<p><strong>One-hot encoding</strong></p>
+<p>For machine learning applications, it is common to create a binary dummy column for each level of your categorical variable. This is the most intuitive representation of categorical information, answering indicative questions for each level of the variable: <em>“is it blue?”</em>, <em>“is it red?”</em> etc. The table below gives an example of some data, the original nominal variable (color) and the one-hot encoded color information.</p>
+<div id="tbl-onehot" class="anchored">
+<table class="table">
+<caption>Table&nbsp;2.1: One-hot dummy variable coding for the categorical attribute <em>color</em></caption>
+<tbody>
+<tr class="odd">
+<td>Observation</td>
+<td>Color</td>
+<td>Blue</td>
+<td>Red</td>
+<td>Yellow</td>
+<td>Other</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Blue</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Yellow</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Blue</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Red</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Red</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>Blue</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>Yellow</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>Other</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>We will demonstrate the creation of this data using some simple random categorical data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">41</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y =</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(<span class="dv">10</span>,<span class="dv">2</span>), <span class="fu">rnorm</span>(<span class="dv">10</span>,<span class="dv">1</span>),<span class="fu">rnorm</span>(<span class="dv">10</span>,<span class="dv">0</span>)),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">x1 =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>), <span class="at">each =</span> <span class="dv">10</span>)),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">x2 =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"Z"</span>, <span class="st">"X"</span>, <span class="st">"Y"</span>,<span class="st">"W"</span>,<span class="st">"V"</span>,<span class="st">"U"</span>), <span class="at">each =</span> <span class="dv">5</span>)))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            y x1 x2
+1   1.2056317  A  Z
+2   2.1972575  A  Z
+3   3.0017043  A  Z
+4   3.2888254  A  Z
+5   2.9057534  A  Z
+6   2.4936675  A  X
+7   2.5992858  A  X
+8   0.4203930  A  X
+9   3.0006207  A  X
+10  4.1880077  A  X
+11 -0.2093244  B  Y
+12  0.4126881  B  Y
+13  2.0561206  B  Y
+14  0.6834151  B  Y
+15  0.9454590  B  Y
+16  1.3297513  B  W
+17  1.6630951  B  W
+18  1.8783282  B  W
+19  1.2028743  B  W
+20  3.2744025  B  W
+21 -0.8992970  C  V
+22  2.1394903  C  V
+23 -1.1659510  C  V
+24 -0.0471304  C  V
+25  0.4158763  C  V
+26  1.7200805  C  U
+27 -0.7843607  C  U
+28 -1.3039296  C  U
+29 -0.4520359  C  U
+30 -1.7739919  C  U</code></pre>
+</div>
+</div>
+<p>Unlike reference and effects coding, which are typically specified within the <code>lm()</code> function as we will see in Chapter <a href="#sec-slr"><span class="quarto-unresolved-ref">sec-slr</span></a>, one-hot encoding is most quickly achieved through use of the <code>onehot</code> package in R, which first creates an “encoder” to do the job quickly.</p>
+<p>The speed of this function has been tested against both the base R <code>model.matrix()</code> function and the <code>dummyVars()</code> function in the <code>caret</code> package and is <em>substantially</em> faster than either.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(onehot)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>encoder  <span class="ot">=</span> <span class="fu">onehot</span>(dat)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>dummies <span class="ot">=</span> <span class="fu">predict</span>(encoder,dat)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dummies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            y x1=A x1=B x1=C x2=U x2=V x2=W x2=X x2=Y x2=Z
+[1,] 1.205632    1    0    0    0    0    0    0    0    1
+[2,] 2.197258    1    0    0    0    0    0    0    0    1
+[3,] 3.001704    1    0    0    0    0    0    0    0    1
+[4,] 3.288825    1    0    0    0    0    0    0    0    1
+[5,] 2.905753    1    0    0    0    0    0    0    0    1
+[6,] 2.493667    1    0    0    0    0    0    1    0    0</code></pre>
+</div>
+</div>
+<p><strong>Reference-level coding</strong></p>
+<p>Reference-level coding is similar to one-hot encoding except one of the levels of the attribute, called the <strong>reference level</strong>, is omitted. Notice that the 4 dummy columns from Table <a href="#tbl-onehot">Table&nbsp;<span class="quarto-unresolved-ref">tbl-onehot</span></a> collectively form a linearly dependent set; that is, if you know the values of 3 of the 4 dummy variables you can determine the <span class="math inline">\(4^{th}\)</span> with complete certainty. This would be a problem for linear regression, where we assume our input attributes are not linearly dependent as we will discuss in Chapter <a href="#sec-slr"><span class="quarto-unresolved-ref">sec-slr</span></a>.</p>
+<p>A reference level of the attribute is often specified by the user to be a particular level worthy of comparison (a baseline), as the estimates in the regression output will be interpreted in a way that compares each non-reference level to the reference level. If a reference level is not specified by the user, one will be picked by the software by default either using the order in which the levels were encountered in the data, or their alphabetical ordering. Users should check the documentation of the associated function to understand what to expect.</p>
+<p>Table <a href="#tbl-refcoding">Table&nbsp;<span class="quarto-unresolved-ref">tbl-refcoding</span></a> transforms the one-hot encoding from Table <a href="#tbl-onehot">Table&nbsp;<span class="quarto-unresolved-ref">tbl-onehot</span></a> into reference-level coding with the color “blue” as the reference level. Notice the absence of the column indicating “blue” and how each blue observation exists as a row of zeros.</p>
+<div id="tbl-refcoding" class="anchored">
+<table class="table">
+<caption>Table&nbsp;2.2: Reference-level dummy variable coding for the categorical attribute <em>color</em> and the reference level of “blue”</caption>
+<tbody>
+<tr class="odd">
+<td>Observation</td>
+<td>Color</td>
+<td>Red</td>
+<td>Yellow</td>
+<td>Other</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Blue</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Yellow</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Blue</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Red</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Red</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>Blue</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>Yellow</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>Other</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Effects coding</strong></p>
+<p>Effects coding is useful for obtaining a more general comparative interpretation when you have approximately equal sample sizes across each level of your categorical attribute. Effects coding is designed to allow the user to compare each level to <em>all</em> of the other levels. More specifically the mean of each level is compared to the <strong>overall mean</strong> of your data. However, the comparison is actually to the so-called <em>grand mean</em>, which is the mean of the means of each group. When sample sizes are equal, the grand mean and the overall sample mean are equivalent. When sample sizes are <em>not</em> equal, the parameter estimates for effects coding should not be used for interpretation or explanation.</p>
+<p>Effects coding still requires a <em>reference level</em>, however the purpose of the reference level is not the same as it was in reference-level coding. Here, the reference level is left out in the sense that no comparison is made between it and the overall mean. Table <a href="#tbl-effcoding">Table&nbsp;<span class="quarto-unresolved-ref">tbl-effcoding</span></a> shows our same example with effects coding. Again we notice the absence of the column indicating “blue” but now the reference level receives values of <code>-1</code> rather than <code>0</code> for all 3 dummy columns. We will revisit the interpretation of linear regression coefficients under this coding scheme in Chapter <a href="#sec-slr"><span class="quarto-unresolved-ref">sec-slr</span></a>.</p>
+<div id="tbl-effcoding" class="anchored">
+<table class="table">
+<caption>Table&nbsp;2.3: Effects coding for the categorical attribute <em>color</em> and the reference level of “blue”</caption>
+<tbody>
+<tr class="odd">
+<td>Observation</td>
+<td>Color</td>
+<td>Red</td>
+<td>Yellow</td>
+<td>Other</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Blue</td>
+<td>-1</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Yellow</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Blue</td>
+<td>-1</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Red</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Red</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>Blue</td>
+<td>-1</td>
+<td>-1</td>
+<td>-1</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>Yellow</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>Other</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="interval-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="interval-variables">Interval Variables</h4>
+<p>An interval variable is a <em>quantity of interest</em> on which the mathematical operations of addition, subtraction, multiplication and division can be performed. Time, temperature and age are all examples of interval attributes. To illustrate the definition, note that “15 minutes” divided by “5 minutes” is 3, which indicates that 15 minutes is 3 times as long as 5 minutes. The sensible interpretation of this simple arithmetic sentence demonstrates the nature of interval attributes. One should note that such arithmetic would not make sense in the treatment of nominal variables.</p>
+</section>
+<section id="ordinal-variables" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="ordinal-variables">Ordinal Variables</h4>
+<p><strong>Ordinal variables</strong> are attributes that are qualitative in nature but have some natural ordering. <em>Level of education</em> is a common example, with a level of ‘PhD’ indicating <em>more</em> education than ‘Bachelors’ but lacking a numerical framework to quantify <em>how much more</em>. The treatment of ordinal variables will depend on the application. Survey responses on a Likert scale are also ordinal - a response of 4=“somewhat agree” on a 1-to-5 scale of agreement cannot reliably be said to be twice as enthusiastic as a response of 2=“somewhat disagree”. These are not interval measurements, though they are often treated as such in a trade-off for computational efficiency.</p>
+<p><strong>Ordinal variables will either be given some numeric value and treated as interval variables or they will be treated as categorical variables and dummy variables will be created. The choice of solution is up to the analyst.</strong> When numeric values are assigned to ordinal variables, the possibilities are many. For example, consider <em>level of education</em>. The simplest ordinal treatment for such an attribute might be something like Table <a href="#tbl-educationint">Table&nbsp;<span class="quarto-unresolved-ref">tbl-educationint</span></a>.</p>
+<div id="tbl-educationint" class="anchored">
+<table class="table">
+<caption>Table&nbsp;2.4: One potential approach to scaling the ordinal attribute level of education</caption>
+<tbody>
+<tr class="odd">
+<td>Level of Education</td>
+<td>Numeric Value</td>
+</tr>
+<tr class="even">
+<td>No H.S. Diploma</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>H.S. Diploma or GED</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Associates or Certificate</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>Bachelors</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>Graduate Certificate</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>Masters</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>PhD</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>While numeric values have been assigned and this data <em>could</em> be used like an interval attribute, it’s important to realize that the notion of a “one-unit increase” is qualitative in nature rather than quantitative. However, if we’re interested in learning whether there is a <em>linear</em> type of relationship between education and another attribute (meaning as education level increases, the value of another attribute increases or decreases), this would be the path to get us there. However we’re making an assumption in this model that the difference between a H.S. Diploma and an Associates degree (a difference of “1 unit”) is the same as the difference between a Master’s degree and a PhD (also a difference of “1 unit”). These types of assumptions can be flawed, and it is often desirable to develop an alternative system of measurement based either on domain expertise or the target variable of interest. This is the notion behind <strong>optimal scaling</strong> and <strong>target-level encoding</strong>.</p>
+<p><strong>Optimal Scaling</strong></p>
+<p>The primary idea behind optimal scaling is to transform an ordinal attribute into an interval one in a way that doesn’t restrict the numeric values to simply the integers <span class="math inline">\(1,2,3, \dots\)</span>. It’s reasonable for a data scientist to use domain expertise to develop an alternative scheme.</p>
+<p>For example, if analyzing movie theater concessions with ordinal drink sizes {small, medium, large}, one is not restricted to the numeric valuation of 1=small, 2=medium, and 3=large just because it’s an ordinal variable with 3 levels. Perhaps it would make more sense to use the drink size in fluid ounces to represent the ordinality. If the small drink is 12 ounces, the medium is 20 ounces, and the large is 48 ounces, then using those values as the numerical representation would be every bit as (if not more) reasonable than using the standard integers 1, 2, and 3.</p>
+<p>If we re-consider the ordinal attribute level of education, we might decide to represent the approximate years of post-secondary schooling required to obtain a given level. This might lead us to something like the attribute values in Table <a href="#tbl-educationscaled">Table&nbsp;<span class="quarto-unresolved-ref">tbl-educationscaled</span></a></p>
+<div id="tbl-educationscaled" class="anchored">
+<table class="table">
+<caption>Table&nbsp;2.5: One potential approach to scaling the ordinal attribute level of education</caption>
+<tbody>
+<tr class="odd">
+<td>Level of Education</td>
+<td>Numeric Value</td>
+</tr>
+<tr class="even">
+<td>No H.S. Diploma</td>
+<td>-1</td>
+</tr>
+<tr class="odd">
+<td>H.S. Diploma or GED</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>Associate’s or Certificate</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>Bachelor’s</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>Graduate Certificate</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>Master’s</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>PhD</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If we were modeling the effect of education on something like salary, it seems reasonable to assume that the jumps between levels should not have equal distance like they did in <a href="#tbl-educationint">Table&nbsp;<span class="quarto-unresolved-ref">tbl-educationint</span></a>. It seems reasonable to assume that one would experience a larger salary lift from Associate’s to Bachelor’s degree than they would from No H.S. Diploma to GED. The most common way to determine the numeric values for categories is to use information from the response variable. This is commonly referred to as <strong>target level encoding</strong>.</p>
+<p><strong>Target Level Encoding</strong></p>
+<p>The values in Table <a href="#tbl-educationscaled">Table&nbsp;<span class="quarto-unresolved-ref">tbl-educationscaled</span></a> might have struck the reader as logical but arbitrary. To be more scientific about the determination of those numeric values, one might wish to use information from the response variable to obtain a more precise expected change in salary for each level increase in education. At first hearing this, one might question the validity of the technique; isn’t the goal to <em>predict</em> salary? This line of thought is natural, which is why having a holdout sample is extremely important in this situation. To implement Target level encoding, we can simply create a look-up table that matches each level of education to the average or median salary obtained for that level. These values can be used just as readily as the arbitrary levels created in Table <a href="#tbl-educationscaled">Table&nbsp;<span class="quarto-unresolved-ref">tbl-educationscaled</span></a> to encode the ordinal attribute!</p>
+</section>
+
+<section id="sec-dist" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="sec-dist"><span class="header-section-number">2.1.2</span> Distributions</h3>
+<p>After reviewing the types and formats of the data inputs, we move on to some basic <strong>univariate</strong> (one variable at a time) analysis. We start by describing the distribution of values that each variable takes on. For nominal variables, this amounts to frequency tables and bar charts of how often each level of the variable appears in the data set.</p>
+<p>We’ll begin by exploring one of our nominal features, <code>Heating_QC</code> which categorizes the quality and condition of a home’s heating system. To create plots in R, we will use the popular <code>ggplot2</code> library. At the same time, we will load the <code>tidyverse</code> library which we will use in the next chunk of code.</p>
+<div class="cell" data-layout-align="center" data-fig="true">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> ames) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Heating_QC),<span class="at">fill=</span><span class="st">"orange"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Heating System Quality"</span>,<span class="at">y=</span><span class="st">"Frequency"</span>,<span class="at">title=</span><span class="st">"Bar Graph of Heating System"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/barchart-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Distribution of Nominal Variable Heating_QC</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To summon the same information in tabular form, we can use the <code>count()</code> function to create a table:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Heating_QC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  Heating_QC     n
+  &lt;ord&gt;      &lt;int&gt;
+1 Poor           3
+2 Fair          92
+3 Typical      864
+4 Good         476
+5 Excellent   1495</code></pre>
+</div>
+</div>
+<p>You’ll notice that very few houses (3) have heating systems in <code>Poor</code> condition, and the majority of houses have systems rated <code>Excellent</code>. <strong>It will likely make sense to combine the categories of <code>Fair</code> and <code>Poor</code> in our eventual analysis, a decision we will later revisit.</strong></p>
+<p>Next we create a <strong>histogram</strong> for an interval attribute like <code>Sale_Price</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> ames) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Sale_Price<span class="sc">/</span><span class="dv">1000</span>),<span class="at">fill=</span><span class="st">"blue"</span>) <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Price (Thousands $)"</span>,<span class="at">y=</span><span class="st">"Frequency"</span>,<span class="at">title=</span><span class="st">"Histogram of Sales Price in Thousands of Dollars"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-histogram" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-histogram-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.1: Distribution of Interval Variable Sale_Price</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>From this initial inspection, we can conclude that most of the houses sell for less than $200,000 and there are a number of expensive anomalies. To more concretely describe and quantify a statistical distribution, we use statistics that describe the <em>location, spread, and shape</em> of the data.</p>
+<section id="location" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="location">Location</h4>
+<p>The <em>location</em> is a measure of central tendency for a distribution. Most common measures of central tendency are <strong>mean</strong>, <strong>median</strong>, and <strong>mode</strong>.</p>
+<p>We define each of these terms below for a variable <span class="math inline">\(\mathbf{x}\)</span> having n observations with values <span class="math inline">\(\{x_i\}_{i=1}^n\)</span>, sorted in order of magnitude such that <span class="math inline">\(x_1 \leq x_2 \leq \dots \leq x_n\)</span>:</p>
+<ul>
+<li>
+<p>Mean: The <strong>average</strong> of the observations, <span class="math inline">\(\bar{\mathbf{x}}= \frac{1}{n}\sum_{i=1}^n x_i\)</span></p>
+</li><li>
+<p>Median: The “middle value” of the data. Formally, when <span class="math inline">\(n\)</span> is odd, the median is the observation value, <span class="math inline">\(x_m = x_{\frac{(n+1)}{2}}\)</span> for which <span class="math inline">\(x_i &lt; x_m\)</span> for 50% of the observations (excluding <span class="math inline">\(x_m\)</span>). When <span class="math inline">\(n\)</span> is even, <span class="math inline">\(x_m\)</span> is the average of <span class="math inline">\(x_\frac{n}{2}\)</span> and <span class="math inline">\(x_{(\frac{n}{2}+1)}\)</span>. The median is also known as the <span class="math inline">\(2^{nd}\)</span> <strong>quartile</strong> (see next section).</p>
+</li><li>
+<p>Mode: The most commonly occurring value in the data. Most commonly used to describe nominal attributes.</p>
+<p><strong>Example</strong></p>
+<p>The following table contains the heights of 10 students randomly sampled from NC State’s campus. Compute the mean, median, mode and quartiles of this variable.</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">height</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">63</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">69</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>
+<p>The mean is <code>(60+62+63+65+67+67+67+68+68+69)/10</code> = 65.6.</p>
+</li><li>
+<p>The median (second quartile) is <code>(67+67)/2</code> = 67.</p>
+</li><li>
+<p>The mode is 67.</p>
+</li></ul>
+</li></ul></section>
+<section id="spread" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="spread">Spread</h4>
+<p>Once we have an understanding of the central tendency of a data set, we move on to describing the spread (the dispersion or variation) of the data. <strong>Range</strong>, <strong>interquartile range</strong>, <strong>variance</strong>, and <strong>standard deviation</strong> are all statistics that describe spread.</p>
+<ul>
+<li>
+<p>Range: The difference between the maximum and minimum data values.</p>
+</li><li>
+<p>Sample variance: The sum of squared differences between each data point and the mean, divided by (n-1). <span class="math inline">\(\frac{1}{n-1}\sum_{i=1}^n (x_i-\bar{x})^2\)</span></p>
+</li><li>
+<p>Standard deviation: The square root of the sample variance.<br>
+</p>
+<p>In order to define <strong>interquartile range</strong>, we must first define <strong>percentiles</strong> and <strong>quartiles</strong>.</p>
+</li><li>
+<p>Percentiles: The 99 intermediate values of the data which divide the observations into 100 equally-sized groups. The <span class="math inline">\(r^{th}\)</span> percentile of the data, <span class="math inline">\(P_{r}\)</span> is the number for which <span class="math inline">\(r\)</span>% of the data is less than <span class="math inline">\(P_{r}\)</span>.</p>
+</li><li>
+<p>Quartiles: The quartiles of the data are the <span class="math inline">\(25^{th}\)</span>, <span class="math inline">\(50^{th}\)</span> and <span class="math inline">\(75^{th}\)</span> percentiles. They are denoted as <span class="math inline">\(Q_{1}\)</span> (<span class="math inline">\(1^{st}\)</span> quartile), <span class="math inline">\(Q_{2}\)</span> (<span class="math inline">\(2^{nd}\)</span> quartile = median) and <span class="math inline">\(Q_{3}\)</span> (<span class="math inline">\(3^{rd}\)</span> quartile), respectively.</p>
+</li><li>
+<p>Interquartile range (IQR): The difference between the <span class="math inline">\(25^{th}\)</span> and <span class="math inline">\(75^{th}\)</span> percentiles.</p>
+<p>One should note that standard deviation is more frequently reported than variance because it shares the same units as the original data, and because of the guidance provided by the empirical rule. If we’re exploring something like <code>Sale_Price</code>, which has the unit “dollars”, then the variance would be measured in “square-dollars”, which hampers the intuition. Standard deviation, on the other hand, would share the unit “dollars”, aiding our fundamental understanding.</p>
+<p><strong>Example</strong> Let’s again use the table of heights from the previous example, this time computing the range, IQR, sample variance and standard deviation.</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">height</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">63</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">69</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>
+<p>The range <code>69-60</code> = 9.</p>
+</li><li>
+<p>The variance is <code>((60-65.6)^2+(62-65.6)^2+(63-65.6)^2+(65-65.6)^2+(67-65.6)^2+(67-65.6)^2+(67-65.6)^2+(68-65.6)^2+(68-65.6)^2+(69-65.6)^2)/9</code> = 8.933</p>
+</li><li>
+<p>The standard deviation is <code>sqrt(8.933)</code> = 2.989</p>
+</li><li>
+<p>The first quartile is <code>(62+63)/2</code> = 62.5</p>
+</li><li>
+<p>The third quartile is <code>(68+68)/2</code> = 68</p>
+</li><li>
+<p>The IQR is <code>68 - 62.5</code> = 5.5.</p>
+</li></ul>
+</li></ul></section>
+<section id="shape" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="shape">Shape</h4>
+<p>The final description we will want to give to distributions regards their shape. Is the histogram <em>symmetric</em>? Is it <em>unimodal</em> (having a single large “heap” of data) or <em>multimodal</em> (having multiple heaps”)? Does it have a longer tail on one side than the other (<em>skew</em>)? Is there a lot more or less data in the tails than you might expect?</p>
+<p>We’ll formalize these ideas with some illustrations. A distribution is right (left) skewed if it has a longer tail on its right (left) side, as shown in Figure <a href="#fig-skewdiagram">Figure&nbsp;<span class="quarto-unresolved-ref">fig-skewdiagram</span></a>.</p>
+<div id="fig-skewdiagram" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/skewdiagrams.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.2: Examples of Left-Skewed (Negative Skew) and Right-skewed (Positive Skew) distributions respectively</figcaption><p></p>
+</figure>
+</div>
+<p>A distribution is called <em>bimodal</em> if it has two “heaps”, as shown in Figure <a href="#fig-bimodal">Figure&nbsp;<span class="quarto-unresolved-ref">fig-bimodal</span></a>.</p>
+<div id="fig-bimodal" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/bimodal.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.3: Example of a Bimodal Distribution</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="summary-functions-in-r" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="summary-functions-in-r">Summary Functions in R</h4>
+<p>There are many ways to obtain all of the statistics described in the preceding sections, below we highlight 3:</p>
+<ol>
+<li>
+<p>The <code>describe</code> function from the <code>Hmisc</code> package which can work on the entire dataset or a subset of columns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Hmisc)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>Hmisc<span class="sc">::</span><span class="fu">describe</span>(ames<span class="sc">$</span>Sale_Price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ames$Sale_Price 
+       n  missing distinct     Info     Mean      Gmd      .05      .10 
+    2930        0     1032        1   180796    81960    87500   105450 
+     .25      .50      .75      .90      .95 
+  129500   160000   213500   281242   335000 
+
+lowest :  12789  13100  34900  35000  35311, highest: 611657 615000 625000 745000 755000</code></pre>
+</div>
+</div>
+</li><li>
+<p>The tidyverse <code>summarise</code> function, in this case obtaining statistics for each <code>Exter_Qual</code> separately.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Exter_Qual) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">average =</span> <span class="fu">mean</span>(Sale_Price), <span class="at">st.dev =</span> <span class="fu">sd</span>(Sale_Price), <span class="at">maximum =</span> <span class="fu">max</span>(Sale_Price), <span class="at">minimum =</span> <span class="fu">min</span>(Sale_Price))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 5
+  Exter_Qual average  st.dev maximum minimum
+  &lt;ord&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;
+1 Fair        89924.  38014.  200000   13100
+2 Typical    143374.  41504.  415000   12789
+3 Good       230756.  70411.  745000   52000
+4 Excellent  377919. 106988.  755000  160000</code></pre>
+</div>
+</div>
+</li><li>
+<p>The base R <code>summary</code> function, which can work on the entire dataset or an individual variable</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ames<span class="sc">$</span>Sale_Price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  12789  129500  160000  180796  213500  755000 </code></pre>
+</div>
+</div>
+</li></ol></section>
+</section>
+<section id="normal" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="normal"><span class="header-section-number">2.1.3</span> The Normal Distribution</h3>
+<p>The normal distribution, also known as the Gaussian distribution, is one of the most fundamental concepts in statistics. It is one that arises naturally out of many applications and settings. The normal distribution has the following characteristics:</p>
+<ol>
+<li>
+<p>Symmetric</p>
+</li><li>
+<p>Fully defined by mean and standard deviation (equivalently, variance)</p>
+</li><li>
+<p>Bell-shaped/Unimodal</p>
+</li><li>
+<p>Mean = Median = Mode</p>
+</li><li>
+<p>Assymptotic to the x-axis (theoretical bounds are <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span>)</p>
+</li></ol>
+<p>Much of the normal distributions utility can be summarized in the <strong>empirical rule</strong>, which states that:</p>
+<ul>
+<li>
+<p><span class="math inline">\(\approx\)</span> 68% of data in normal distribution lies within 1 standard deviation of the mean.</p>
+</li><li>
+<p><span class="math inline">\(\approx\)</span> 95% of data in normal distribution lies within 2 standard deviations of the mean.</p>
+</li><li>
+<p><span class="math inline">\(\approx\)</span> 99.7% of data in normal distribution lies within 3 standard deviations of the mean.</p>
+</li></ul>
+<p>We can thus conclude that observations found outside of 3 standard deviations from the mean are quite rare, expected less than 1% of the time.</p>
+</section>
+<section id="skew" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="skew"><span class="header-section-number">2.1.4</span> Skewness</h3>
+<p>Skewness is a statistic that describes the symmetry (or lack thereof) of a distribution. A normal distribution is perfectly symmetric and has a skewness of 0. Distributions that are more right skewed will have positive values of skewness whereas distributions that are more left skewed will have negative values of skewness.</p>
+</section>
+<section id="kurt" class="level3" data-number="2.1.5">
+<h3 data-number="2.1.5" class="anchored" data-anchor-id="kurt"><span class="header-section-number">2.1.5</span> Kurtosis</h3>
+<p>Kurtosis is a statistic that describes the <em>tailedness</em> of a distribution. The normal distribution has a kurtosis of 3. Distributions that are more tailed (leptokurtic or heavy-tailed) will have kurtosis values greater than 3 whereas distributions that are more less tailed (platykurtic or thin-tailed) will have values of kurtosis less than 3. For this reason, kurtosis is often reported in the form of <em>excess kurtosis</em> which is the raw kurtosis value minus 3. This is meant as a comparison to the normal distribution so that positive values indicate thicker tails and negative values indicate thinner tails than the normal.</p>
+<p>In Figure <a href="#fig-kurtosis">Figure&nbsp;<span class="quarto-unresolved-ref">fig-kurtosis</span></a> below, we compare classical examples of leptokurtic and platykurtic distributions to a normal distribution with the same mean and variance.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-kurtosis" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-kurtosis-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.4: The Laplace distribution (top left) is leptokurtic because it has more data in its tails than the normal distribution with the same mean and variance. The uniform distribution (top right) is platykurtic because it has less data in its tails than the normal distribution with the same mean and variance (it effectively has no tails).</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="graphdist" class="level3" data-number="2.1.6">
+<h3 data-number="2.1.6" class="anchored" data-anchor-id="graphdist"><span class="header-section-number">2.1.6</span> Graphical Displays of Distributions</h3>
+<p>There are three types of plots for examining the distribution of your data values:</p>
+<ol>
+<li>
+<p>Histograms</p>
+</li><li>
+<p>Normal Probability Plots (QQ-plots)</p>
+</li><li>
+<p>Box Plots</p>
+<section id="histograms" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="histograms">Histograms</h4>
+<p>A histogram shows the shape of a univariate distribution. Each bar in the histogram represents a group of values (a <em>bin</em>). The height of the bar represents the either the frequency of or the percent of values in the bin. The width and number of bins is determined automatically, but the user can adjust them to see more or less detail in the histogram. Figure <a href="#fig-histogram">Figure&nbsp;<span class="quarto-unresolved-ref">fig-histogram</span></a> demonstrated a histogram of sale price. Sometimes it’s nice to overlay a continuous approximation to the underlying distribution using a <em>kernal density estimator</em> with the <code>geom_density</code> plot, demonstrated in Figure <a href="#fig-histwithkernal">Figure&nbsp;<span class="quarto-unresolved-ref">fig-histwithkernal</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames,<span class="fu">aes</span>(<span class="at">x=</span>Sale_Price<span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y=</span>..density..), <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> <span class="fu">geom_density</span>( <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Price (Thousands $)"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
+ℹ Please use `after_stat(density)` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-histwithkernal" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-histwithkernal-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.5: Histogram of Sale_Price with kernal density estimator</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In our next example, Figure <a href="#fig-overhistogramAC">Figure&nbsp;<span class="quarto-unresolved-ref">fig-overhistogramAC</span></a>, we’ll complicate the previous example by showing <em>two</em> distributions of sale price, one for each level of the binary variable <code>Central_Air</code>, overlaid on the same axes.</p>
+<p>We can immediately see that there are many more houses that have central air than do not in this data. It appears as though the two distributions have different locations, with the purple distribution centered at a larger sale price. To normalize that quantity and compare the raw probability densities, we can change our axes to density as in Figure <a href="#fig-overhistogramAC">Figure&nbsp;<span class="quarto-unresolved-ref">fig-overhistogramAC</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames,<span class="fu">aes</span>(<span class="at">x=</span>Sale_Price<span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">data=</span><span class="fu">subset</span>(ames,Central_Air <span class="sc">==</span> <span class="st">'Y'</span>),<span class="fu">aes</span>(<span class="at">fill=</span>Central_Air), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">data=</span><span class="fu">subset</span>(ames,Central_Air <span class="sc">==</span> <span class="st">'N'</span>),<span class="fu">aes</span>(<span class="at">fill=</span>Central_Air), <span class="at">alpha  =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Price (Thousands $)"</span>)  <span class="sc">+</span> <span class="fu">scale_fill_manual</span>(<span class="at">name=</span><span class="st">"Central_Air"</span>,<span class="at">values=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>),<span class="at">labels=</span><span class="fu">c</span>(<span class="st">"No"</span>,<span class="st">"Yes"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-overhistogramAC" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-overhistogramAC-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.6: Histogram: Frequency of Sale_Price for Each value of Central_Air</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames,<span class="fu">aes</span>(<span class="at">x=</span>Sale_Price<span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">data=</span><span class="fu">subset</span>(ames,Central_Air <span class="sc">==</span> <span class="st">'Y'</span>),<span class="fu">aes</span>(<span class="at">y=</span>..density..,<span class="at">fill=</span>Central_Air), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">data=</span><span class="fu">subset</span>(ames,Central_Air <span class="sc">==</span> <span class="st">'N'</span>),<span class="fu">aes</span>(<span class="at">y=</span>..density..,<span class="at">fill=</span>Central_Air), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Price (Thousands $)"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-overhistogramdensityAC" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-overhistogramdensityAC-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.7: Histogram: Density of Sale_Price for varying qualities of Central_Air</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To ease our differentiation of the histograms even further, we again employ a kernel density estimator as shown in Figure <a href="#fig-overhistogramdensitykernelAC">Figure&nbsp;<span class="quarto-unresolved-ref">fig-overhistogramdensitykernelAC</span></a>. This is an appealing alternative to the histogram for continuous data that is assumed to originate from some smooth underlying distribution.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames,<span class="fu">aes</span>(<span class="at">x=</span>Sale_Price<span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(<span class="at">data=</span><span class="fu">subset</span>(ames,Central_Air <span class="sc">==</span> <span class="st">'Y'</span>),<span class="fu">aes</span>(<span class="at">fill=</span>Central_Air), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(<span class="at">data=</span><span class="fu">subset</span>(ames,Central_Air <span class="sc">==</span> <span class="st">'N'</span>),<span class="fu">aes</span>(<span class="at">fill=</span>Central_Air), <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Price (Thousands $)"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-overhistogramdensitykernelAC" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-overhistogramdensitykernelAC-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.8: Histogram: Density of Sale_Price for varying qualities of Central_Air</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="normal-probability-plots-qq-plots" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="normal-probability-plots-qq-plots">Normal probability plots (QQ Plots)</h4>
+<p>A <strong>normal probability plot</strong> graphs the sorted data values against the values that one would expect if the same number of observations came from a theoretical normal distribution. The resulting image would look close to a straight line if the data was generated by a normal distribution. Strong deviations from a straight line indicate that the data distribution is not normal.</p>
+<p>Figure <a href="#fig-qqplot">Figure&nbsp;<span class="quarto-unresolved-ref">fig-qqplot</span></a> shows a QQ plot for <code>Sale_Price</code>, and we can conclude that the variable is not normally distributed (in fact it is right skewed).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> ames, <span class="fu">aes</span>(<span class="at">sample =</span> Sale_Price<span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-qqplot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-qqplot-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.9: QQ-Plot: Quantiles of Sale_Price vs.&nbsp;quantiles of a theoretical normal distribution with same mean and standard deviation. Conclusion: Sale_Price is <em>not</em> normally distributed due to a problem with skew.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There are two main patterns that we expect to find when examining QQ-plots:</p>
+<ol>
+<li>
+<p>A quadratic shape, as seen in Figure <a href="#fig-qqplot">Figure&nbsp;<span class="quarto-unresolved-ref">fig-qqplot</span></a>. This pattern indicates a deviation from normality due to skewness to the data.</p>
+</li><li>
+<p>An S-shape (or cubic shape), as seen in Figure <a href="#fig-qqplotKurt">Figure&nbsp;<span class="quarto-unresolved-ref">fig-qqplotKurt</span></a>. This pattern indicates deviation from normality due to kurtosis.</p>
+</li></ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">j1 =</span> <span class="fu">rlaplace</span>(<span class="dv">10000</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">sample=</span>j1)) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-qqplotKurt" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-qqplotKurt-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.10: QQ-Plot: Quantiles of the Laplace distribution vs.&nbsp;quantiles of a theoretical normal distribution with same mean and standard deviation. Conclusion: Data is <em>not</em> normally distributed (in fact it is leptokurtic), due to a problem with kurtosis.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="box-plots" class="level4 unnumbered">
+<h4 class="unnumbered anchored" data-anchor-id="box-plots">Box Plots</h4>
+<p>Box plots (sometimes called box-and-whisker plots) will not necessarily tell you about the <em>shape</em> of your distribution (for instance a bimodal distribution could have a similar box plot to a unimodal one), but it will give you a sense of the distribution’s location and spread and potential skewness.</p>
+<p>Many of us have become familiar with the <em>idea</em> of a box plot, but when pressed for the specific steps to create one, we realize our familiarity fades. The diagram in Figure <a href="#fig-boxplot">Figure&nbsp;<span class="quarto-unresolved-ref">fig-boxplot</span></a>) will remind the reader the precise information conveyed by a box plot.</p>
+<div id="fig-boxplot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/boxplot.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.11: Anatomy of a Box Plot.</figcaption><p></p>
+</figure>
+</div>
+<p>Figure <a href="#fig-rboxplot">Figure&nbsp;<span class="quarto-unresolved-ref">fig-rboxplot</span></a> shows the boxplot of <code>Sale_Price</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> ames, <span class="fu">aes</span>(<span class="at">y =</span> Sale_Price<span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Sales Price (Thousands $)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-rboxplot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-rboxplot-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.12: Box Plot of Sales Price</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Furthermore, we might want to compare the boxplots of <code>Sale_Price</code> for different levels of a categorical variable, like <code>Central_Air</code> as we did with histograms and densities in Figures <a href="#fig-overhistogramAC">Figure&nbsp;<span class="quarto-unresolved-ref">fig-overhistogramAC</span></a> and <a href="#fig-overhistogramdensityAC">Figure&nbsp;<span class="quarto-unresolved-ref">fig-overhistogramdensityAC</span></a>.</p>
+<p>The following code achieves this goal in Figure <a href="#fig-multiboxplotAC">Figure&nbsp;<span class="quarto-unresolved-ref">fig-multiboxplotAC</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> ames, <span class="fu">aes</span>(<span class="at">y =</span> Sale_Price<span class="sc">/</span><span class="dv">1000</span>, <span class="at">x =</span> Central_Air, <span class="at">fill =</span> Central_Air)) <span class="sc">+</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Sales Price (Thousands $)"</span>, <span class="at">x =</span> <span class="st">"Central Air"</span>) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Accent"</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-multiboxplotAC" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-multiboxplotAC-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.13: Box Plots of Sale_Price for each level of Exter_Qual</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</li></ol></section>
+
+<section id="pointest" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="pointest"><span class="header-section-number">2.2</span> Point Estimates</h2>
+<p>All the statistics discussed so far have been <em>point estimates</em>. They are our <em>best</em> estimate at what the population parameter might be, but since we’ve taken a random sample of data from that population, there must be some uncertainty surrounding that estimate. In statistics, our real interest lies in drawing inferences about an entire population (which we couldn’t possibly observe due to time, cost, and/or feasibility constraints) and our approach is to take a representative sample and try to understand what it might tell us about the population.</p>
+<p>For the remainder of this text, we will assume our sample is representative of the population. Let’s review some common statistical notation of <em>population parameters</em> (the true values we are unable to observe) and <em>sample statistics</em> (those values we calculate based on our sample)</p>
+<table class="table">
+<colgroup>
+<col style="width: 49%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Population Parmeter</th>
+<th style="text-align: center;">Sample Statistic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Mean (<span class="math inline">\(\mu\)</span>)</td>
+<td style="text-align: center;">Sample Average(<span class="math inline">\(\bar{x}\)</span>)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Variance (<span class="math inline">\(\sigma^{2}\)</span>)</td>
+<td style="text-align: center;">Sample Variance(<span class="math inline">\(s^{2}_{x}\)</span>)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Standard deviation (<span class="math inline">\(\sigma^{2}\)</span>)</td>
+<td style="text-align: center;">Sample standard deviation(<span class="math inline">\(s_{x}\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<p>Calculating point estimates should lead us to a natural question, one that embodies the field of statistics which aims to quantify uncertainty: <em>What’s the margin of error for this estimate?</em> This will be the subject of interest in the next section.</p>
+</section>
+<section id="sec-ci" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-ci"><span class="header-section-number">2.3</span> Confidence Intervals</h2>
+<p>Let’s imagine that we want to calculate the average gas mileage of American cars on the road today in order to analyze the country’s carbon footprint. It should be clear to the reader that the calculation of the <em>population mean</em> would not be possible. The best we could do is take a large representative sample and calculate the sample average. Again, the next question should be: What is the margin of error for this estimate? If our sample average is 21.1 mpg, could the population mean reasonably be 21.2 mpg? how about 25 mpg? 42 mpg?</p>
+<p>To answer this question, we reach for the notion of <em>confidence intervals</em>. A <strong>confidence interval</strong> is an interval that we believe contains the population mean with some degree of confidence. A confidence interval is associated with a <em>confidence level</em>, a percentage, which indicates the strength of our confidence that the interval created actually captured the true parameter.</p>
+<p>It’s an important nuance to remember that the population mean is a fixed number. The source of randomness in our estimation is our sample. When we construct a 95% confidence interval, we are claiming that, upon repetition of the sampling and interval calculation process, we expect 95% of our created intervals to contain the population mean.</p>
+<p>To obtain a confidence interval for a mean in R, we can use the <code>t.test()</code> function, as shown below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(ames<span class="sc">$</span>Sale_Price, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  ames$Sale_Price
+t = 122.5, df = 2929, p-value &lt; 2.2e-16
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ 177902.3 183689.9
+sample estimates:
+mean of x 
+ 180796.1 </code></pre>
+</div>
+</div>
+<p>We can gather based on the output that our 95% confidence interval for the mean of <code>Sale_Price</code> is [177902.3, 183689.9]. This function also outputs some extra information that relates to hypothesis testing which we will discuss in Section <a href="#sec-hypotest"><span class="quarto-unresolved-ref">sec-hypotest</span></a>). For now, if we only want to pull the output containing the confidence interval information, we can specify <code>$conf.int</code> to the object output from <code>t.test</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(ames<span class="sc">$</span>Sale_Price, <span class="at">conf.level =</span> <span class="fl">0.95</span>)<span class="sc">$</span>conf.int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 177902.3 183689.9
+attr(,"conf.level")
+[1] 0.95</code></pre>
+</div>
+</div>
+<p>To learn the labels of the various pieces of output, you can list them with the <code>ls()</code> function, or by saving the output as an object (below, <code>results</code> is the object that stores the output) and exploring it in your environment (upper right panel in RStudio):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>(<span class="fu">t.test</span>(ames<span class="sc">$</span>Sale_Price, <span class="at">conf.level =</span> <span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "alternative" "conf.int"    "data.name"   "estimate"    "method"     
+ [6] "null.value"  "p.value"     "parameter"   "statistic"   "stderr"     </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">t.test</span>(ames<span class="sc">$</span>Sale_Price, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sec-hypotest" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-hypotest"><span class="header-section-number">2.4</span> Hypothesis Testing</h2>
+<p>A confidence interval can help us test a hypothesis about the population mean. A <strong>hypothesis</strong> is merely a statement that we wish to investigate scientifically through the process of statistical inference. In Section <a href="#sec-ci"><span class="quarto-unresolved-ref">sec-ci</span></a> we proposed some potential hypotheses in the form of questions: If the sample average gas mileage is 21.1, is it possible that the population mean is 21.2? How about 42? The statistical <strong>hypothesis test</strong> can help us answer these questions.</p>
+<p>To conduct a hypothesis test, we make an initial assumption. This initial assumption is called the <strong>null hypothesis</strong> and typically denoted as <span class="math inline">\(H_0\)</span>. We then analyze the data and determine whether our observations are likely, given our assumption of the null hypothesis. If we determine that our observed data was unlikely <em>enough</em> (beyond some threshold that we set before hand - or beyond a “reasonable doubt” in the justice system) then we <em>reject</em> our initial assumption in favor of the opposite statement, known as the <strong>alternative hypothesis</strong> denoted <span class="math inline">\(H_a\)</span>. The threshold or <strong>significance level</strong> that we use to determine how much evidence is required to reject the null hypothesis is a proportion, <span class="math inline">\(\alpha\)</span>, which specifies how often we’re willing to incorrectly reject the null hypothesis (this means that we are assuming the null hypothesis is true). Remember, in applied statistics there are no proofs. Every decision we make comes with some degree of uncertainty. <span class="math inline">\(\alpha\)</span> quantifies our allowance for that uncertainty. In statistical textbooks of years past, <span class="math inline">\(\alpha = 0.05\)</span> was the norm. Later in this text we will propose much smaller values for <span class="math inline">\(\alpha\)</span> depending on your sample size.</p>
+<p>In order to quantify how unlikely it was that we observed a statistic as extreme or more extreme than we did, we calculate a <strong>p-value</strong>. The p-value is the area under the <strong>null distribution</strong> that represents the probability that we observed something as extreme or more extreme than we did (assuming the truth of the null hypothesis). If our p-value is less than our confidence level, <span class="math inline">\(\alpha\)</span>, we have enough evidence to reject the null hypothesis in favor of the alternative.</p>
+<p>Let’s take an example and actually <em>create</em> a null distribution. Suppose we flip a fair coin, having equal probability of landing on heads or tails. We can actually simulate this experience with code! The following line of code does just that. Go ahead and run it a few times until you observe a coin flip of each type.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">'Heads'</span>,<span class="st">'Tails'</span>), <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Heads"</code></pre>
+</div>
+</div>
+<p>Now, let’s suppose we do that <em>many</em> times and count the number of times we observe one outcome, say <code>Heads</code>. This can be done by sampling the values directly into a vector. Let <code>n</code> be the number of coin tosses.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>n<span class="ot">=</span><span class="dv">100</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>outcomes <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">'Heads'</span>,<span class="st">'Tails'</span>), n, <span class="at">replace=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can count the number of <code>Heads</code> we obtained as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(outcomes<span class="sc">==</span><span class="st">"Heads"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 58</code></pre>
+</div>
+</div>
+<p>Every time you run the lines of code above you will find a different set of coin flips and a varying number of <code>Heads</code>; <em>however</em> the number of <code>Heads</code> will revolve around 50, because that is what we’d expect for a fair coin whose probability of <code>Heads</code> is 50% (Indeed, this simulates a draw from a binomial distribution with n=100 and p=0.5; the expected value of that distribution is <span class="math inline">\(np=50\)</span> and the variance is <span class="math inline">\(np(1-p)=25\)</span>).</p>
+<p>Thus, if were to do the above experiment thousands of times, we could map out a distribution of how many <code>Heads</code> one might reasonably receive by tossing a fair coin 100 times. Let’s do that, using a <code>for</code> loop. Let <code>T</code> be the number of simulated experiments (each experiment tosses the coin 100 times), and let <code>number_heads</code> be a vector that stores the number of heads for each experiment. We can initialize <code>number_heads</code> with an empty vector. Notice that our loop overwrites the coin toss data in each step, after recording the number of heads.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>T<span class="ot">=</span><span class="dv">10000</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>n<span class="ot">=</span><span class="dv">100</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">11</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>number_heads <span class="ot">=</span> <span class="fu">vector</span>()</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>T){</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>outcomes <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">'Heads'</span>,<span class="st">'Tails'</span>), n, <span class="at">replace=</span>T)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>number_heads[i] <span class="ot">=</span> <span class="fu">sum</span>(outcomes<span class="sc">==</span><span class="st">"Heads"</span>)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(number_heads)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> df) <span class="sc">+</span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> number_heads)) <span class="sc">+</span> </span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of heads in 100 tosses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-cointoss" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-cointoss-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.14: Null Distribution: Number of heads for fair coin tossed 100 times</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure <a href="#fig-cointoss">Figure&nbsp;<span class="quarto-unresolved-ref">fig-cointoss</span></a> represents our null distribution of the number of heads from a fair coin tossed 100 times. What are the minimum and maximum values of this observed distribution?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(df<span class="sc">$</span>number_heads)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  33.00   47.00   50.00   49.99   53.00   71.00 </code></pre>
+</div>
+</div>
+<hr>
+<p><strong>Example</strong></p>
+<p>Suppose now we obtain a new coin from a friend and our hypothesis is that it “feels unfair”. We decide that we want a conservative signficance level of 0.01 before we accuse our friend of cheating, so we conduct a hypothesis test. Our null hypothesis must generate a known distribution to which we can compare. Thus our null hypothesis is that the coin is fair: <span class="math display">\[H_0 = \text{The coin is fair:}\quad P(Heads) = 0.5\]</span> Our alternative hypothesis is the opposite of this: <span class="math display">\[H_0 = \text{The coin is not fair:}\quad P(Heads) \neq 0.5\]</span> Suppose we flip the coin 100 times and count 65 heads. How likely is it that we would have obtained a result as extreme or more extreme than this if the coin was fair? Here we introduce the notion of a <strong>two-tailed hypothesis test</strong>. Since our hypothesis is that the coin is simply unfair, we want to know how likely it is that we obtained a result <em>so different from 50</em>. This is quantified by the <em>absolute</em> difference between what we observed and what we expected. Thus, when considering our null distribution, we want to look at the probability we’d obtain something greater than or equal to 65 (<span class="math inline">\(=50+15\)</span>) heads, <em>or</em> less than or equal to 35 (<span class="math inline">\(=50-15\)</span>) heads.</p>
+<p>Let’s take a look at this graphically through our simulated data:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-cointossht" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-cointossht-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.15: Null Distribution: Number of heads for fair coin tossed 100 times</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can use this simulated distribution to estimate the p-value associated with obtaining 65 heads (the red area highlighted in Figure <a href="#fig-cointossht">Figure&nbsp;<span class="quarto-unresolved-ref">fig-cointossht</span></a>. We’d simply calculate the proportion of times we observed values equal to or more extreme than 65 - this is the very definition of a p-value. In the following line of code, <code>|</code> represents the logical “or” operator.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(number_heads<span class="sc">&gt;=</span><span class="dv">65</span> <span class="sc">|</span> number_heads<span class="sc">&lt;=</span><span class="dv">35</span>)<span class="sc">/</span>T</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0041</code></pre>
+</div>
+</div>
+<p><strong>Conclusion</strong>: We said at the outset that we wanted a significance level of 0.01, or 1%, for our test before we accused our friend of cheating. Based on our simulations, there is a 0.4% chance that we’d obtain the result we did, or something more extreme, if the coin was fair. Therefore, we have no choice but to <em>reject our null hypothesis in favor of the alternative</em>. Our friend has some explaining to do!</p>
+<p>Before we move on, we can compare the simulated result we just developed to one based on a theoretical distribution. This can be done using the <code>prop.test()</code> function to test a proportion. The formal test confirms our conclusion.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.test</span>(<span class="dv">65</span>, <span class="dv">100</span>, <span class="at">p =</span> <span class="fl">0.5</span>,</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">alternative =</span> <span class="fu">c</span>(<span class="st">"two.sided"</span>),</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">conf.level =</span> <span class="fl">0.99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    1-sample proportions test with continuity correction
+
+data:  65 out of 100
+X-squared = 8.41, df = 1, p-value = 0.003732
+alternative hypothesis: true p is not equal to 0.5
+99 percent confidence interval:
+ 0.5162768 0.7643236
+sample estimates:
+   p 
+0.65 </code></pre>
+</div>
+</div>
+<hr>
+<p>The nice thing about a simulation study like the one above is that it allows the user to explore how changes in the underlying procedure might affect the outcome. We’ll next consider two pieces that of the simulation study and how they affect the p-value: the <em>sample size</em> (the number of coin flips) and the <em>effect size</em> (the observed deviation from 50% heads).</p>
+<ol>
+<li>
+<p>What happens if we increase/decrease the number of coin flips in our experiment, but keep the effect size the same, fixed at 65% heads? If we only flipped the coin 10 times, would 6-7 heads be improbable to witness from a fair coin? If we flipped the coin 1000 times, would 650 heads be <em>more</em> or <em>less</em> improbable than that same ratio in 10 tosses? In other words, which of these situations would entail a smaller p-value? We hope that the reader now has some intuition to answer this question. If not, we encourage them to answer it by altering the value of <code>n</code> in the simulation code, and seeing how the changes affect the distribution of the null hypothesis.</p>
+</li><li>
+<p>What happens if we fix the sample size at 100 tosses and decrease the effect size from 65 heads to 60 heads? We’ve already generated the data to answer this question - our p-value would <em>increase</em> because it would be <em>more</em> probable to obtain a smaller effect size from a fair coin. On the flip side (pun intended) the p-value would <em>decrease</em> for a larger effect size.</p>
+<section id="onesample" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="onesample"><span class="header-section-number">2.4.1</span> One-Sample T-Test</h3>
+<p>If we want to test whether the mean of continuous variable is equal to hypothesized value, we can use the <code>t.test()</code> function. The following code tests whether the average sale price of homes from Ames, Iowa over the data time period is $178,000. For now, we’ll use the classic <span class="math inline">\(\alpha=0.05\)</span> as our significance level. If we have enough evidence to reject this null hypothesis, we will conclude that the mean sale price is significantly different than $178,000 for a two-tailed test (the default):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(ames<span class="sc">$</span>Sale_Price, <span class="at">mu =</span> <span class="dv">178000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  ames$Sale_Price
+t = 1.8945, df = 2929, p-value = 0.05825
+alternative hypothesis: true mean is not equal to 178000
+95 percent confidence interval:
+ 177902.3 183689.9
+sample estimates:
+mean of x 
+ 180796.1 </code></pre>
+</div>
+</div>
+<p>Because our <em>p-value is greater than our alpha</em> level of 0.05, we <em>fail to reject</em> the null hypothesis. We do not quite have sufficient evidence to say the mean is different from 178,000.</p>
+<p>If we’re instead interested in testing whether the <code>Sale_Price</code> is <em>higher</em> than $178,000, we can specify this in the <code>alternative=</code> option.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(ames<span class="sc">$</span>Sale_Price, <span class="at">mu =</span> <span class="dv">178000</span>, <span class="at">alternative =</span> <span class="st">'greater'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  ames$Sale_Price
+t = 1.8945, df = 2929, p-value = 0.02913
+alternative hypothesis: true mean is greater than 178000
+95 percent confidence interval:
+ 178367.7      Inf
+sample estimates:
+mean of x 
+ 180796.1 </code></pre>
+</div>
+</div>
+<p>In this second test, we see that we actually <em>do have enough evidence</em> to claim that the true mean is greater than $178,000 at the <span class="math inline">\(\alpha=0.05\)</span> level.</p>
+</section>
+</li></ol></section>
+<section id="two-sample-t-tests" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="two-sample-t-tests"><span class="header-section-number">2.5</span> Two-Sample t-tests</h2>
+<p>If we have a hypothesis about a difference in the means of two groups of observations, a <strong>two-sample t-test</strong> can tell us whether that difference is statistically significant. By <em>statistically significant</em>, we mean the observed difference in sample means is greater than what we would expect to find if the population means were truly equal. In other words, statistical significance is a phrase that describes when our p-value falls below our significance level, <span class="math inline">\(\alpha\)</span>. Typically, the groups of interest are formed by levels of a binary variable, and the t-test is a way of testing whether there is a relationship between that binary variable and the continuous variable.</p>
+<p>To conduct a two-sample t-test, our data should satisfy 3 fundamental assumptions:</p>
+<ol>
+<li>
+<p>The observations are independent</p>
+</li><li>
+<p>The data from each group is normally distributed</p>
+</li><li>
+<p>The variances for each group are equal</p>
+</li></ol>
+<p>If our data does not satisfy these assumptions, we must adapt our test to the situation. If the <span class="math inline">\(3^{rd}\)</span> assumption of equal variances is not met, we simply add the option <code>var.equal=F</code> to the <code>t.test()</code> function to use the Welch or Satterthwaite approximation to degrees of freedom (it’s becoming increasingly common for practitioners to use this option even when variances are equal).</p>
+<p>If the <span class="math inline">\(2^{nd}\)</span> assumption is not met, one must opt for a <em>nonparametric</em> test like the Mann-Whitney-U test (also called the Mann–Whitney–Wilcoxon or the Wilcoxon rank-sum test).</p>
+<p>The <span class="math inline">\(1^{st}\)</span> assumption is not easily checked unless the data is generated over time (time-series) and is instead generally implied by careful data collect and the application of domain expertise.</p>
+<section id="sec-testnorm" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="sec-testnorm"><span class="header-section-number">2.5.1</span> Testing Normality of Groups</h3>
+<p>We can test the normality assumption either graphically or through formal statistical tests. The best graphical test of normality is a QQ-Plot, though histograms are often used as well. We saw in Figures <a href="#fig-qqplot">Figure&nbsp;<span class="quarto-unresolved-ref">fig-qqplot</span></a> and <a href="#fig-histogram">Figure&nbsp;<span class="quarto-unresolved-ref">fig-histogram</span></a> that the distribution of <code>Sale_Price</code> was not perfectly normal, however the deviations from normality were not egregious. In Figure <a href="#fig-qqplotcentralair">Figure&nbsp;<span class="quarto-unresolved-ref">fig-qqplotcentralair</span></a> we again examine the normality of Sale Price, this time for each value of <code>Central_Air</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> ames, <span class="fu">aes</span>(<span class="at">sample =</span> Sale_Price, <span class="at">color =</span> Central_Air)) <span class="sc">+</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>     <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">stat_qq_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-qqplotcentralair" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="01-introduction_statistics_files/figure-html/fig-qqplotcentralair-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2.16: QQ-Plot: Quantiles of Sale_Price vs.&nbsp;quantiles of a theoretical normal distribution with same mean and standard deviation, for each level of Central_Air. Conclusion: Sale_Price is <em>not</em> normally distributed for Central_Air=‘Yes’ and is <em>more</em> normally distributed for Central_Air = ‘No’.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>For formal tests of normality, we most often use the Shapiro-Wilk test, although many other formal tests exist, each with their own advantages and disadvantages. All of these tests have the null hypothesis of normality: <span class="math display">\[H_0: \text{ the data is normally distributed}\]</span> <span class="math display">\[H_a: \text{ the data is NOT normally distributed}\]</span> We conduct formal tests as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(ames<span class="sc">$</span>Sale_Price[ames<span class="sc">$</span>Central_Air<span class="sc">==</span><span class="st">'Y'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  ames$Sale_Price[ames$Central_Air == "Y"]
+W = 0.86295, p-value &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(ames<span class="sc">$</span>Sale_Price[ames<span class="sc">$</span>Central_Air<span class="sc">==</span><span class="st">'N'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  ames$Sale_Price[ames$Central_Air == "N"]
+W = 0.95315, p-value = 4.739e-06</code></pre>
+</div>
+</div>
+<p>The formal test rejects the null hypotheses of normality and confirms what we saw in our visual analysis.</p>
+<p>For the sake of illustration, we will proceed in this example under the assumption of normality (JUST for illustration), though a non-parametric approach will also be demonstrated later in our analysis in Section <a href="#sec-wilcoxon"><span class="quarto-unresolved-ref">sec-wilcoxon</span></a>.</p>
+</section>
+<section id="sec-ftest" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="sec-ftest"><span class="header-section-number">2.5.2</span> Testing Equality of Variances</h3>
+<p>We can conduct a formal test to confirm that the <span class="math inline">\(3^{rd}\)</span> assumption is met. This test for equal variances is known as an F-Test. The null hypothesis is that the variances are equal, the alternative being that they are not: <span class="math display">\[H_0: \sigma_1^2 = \sigma_2^2\]</span> <span class="math display">\[H_a: \sigma_1^2 \neq \sigma_2^2\]</span></p>
+<p>The F-Test is invoked with the <code>var.test</code> function, which takes as input a <code>formula</code>. A formula is an R object most often created using the <code>~</code> operator, for example <code>y ~ x + z</code>, interpreted as a specification that the response <code>y</code> is to be predicted with the inputs <code>x</code> and <code>z</code>. For our present discussion on two-sample t-tests, we might think of predicting our continuous attribute with our binary attribute, provided the means are different between the two groups.</p>
+<p>The following code checks whether the distributions of Sale_Price for houses with and without central air have the same variance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(Sale_Price <span class="sc">~</span> Central_Air, <span class="at">data =</span> ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    F test to compare two variances
+
+data:  Sale_Price by Central_Air
+F = 0.2258, num df = 195, denom df = 2733, p-value &lt; 2.2e-16
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.1854873 0.2800271
+sample estimates:
+ratio of variances 
+         0.2257977 </code></pre>
+</div>
+</div>
+<p>They do not. Thus, we must opt for the <code>var.equal=FALSE</code> option in the <code>t.test()</code> procedure.</p>
+</section>
+<section id="sec-tsttest" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="sec-tsttest"><span class="header-section-number">2.5.3</span> Testing Equality of Means</h3>
+<p>Assuming the first two assumptions are met, the two-sample t-test is performed by including a binary grouping variable with into the <code>t.test()</code> function. Below we test whether the mean sales price is different for houses with and without <code>Central_Air</code>, and we include the <code>var.equal=FALSE</code> option because we determined that the variances of the two groups were unequal in Section <a href="#sec-ftest"><span class="quarto-unresolved-ref">sec-ftest</span></a>. The null hypothesis for the t-test is that the means of the two groups are equal: <span class="math display">\[H_0: \mu_1 = \mu_2\]</span> <span class="math display">\[H_a: \mu_1 \neq \mu_2\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(Sale_Price <span class="sc">~</span> Central_Air, <span class="at">data =</span> ames, <span class="at">var.equal =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  Sale_Price by Central_Air
+t = -27.433, df = 336.06, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means between group N and group Y is not equal to 0
+95 percent confidence interval:
+ -90625.69 -78498.92
+sample estimates:
+mean in group N mean in group Y 
+       101890.5        186452.8 </code></pre>
+</div>
+</div>
+<p>Our final conclusion from the t-test is the <em>rejection of the null hypothesis</em> and the conclusion that <em>houses with and without central air should be expected to sell for different prices.</em></p>
+</section>
+<section id="sec-wilcoxon" class="level3" data-number="2.5.4">
+<h3 data-number="2.5.4" class="anchored" data-anchor-id="sec-wilcoxon"><span class="header-section-number">2.5.4</span> Mann-Whitney-Wilcoxon Test</h3>
+<p>As we pointed out in Section <a href="#sec-testnorm"><span class="quarto-unresolved-ref">sec-testnorm</span></a>, the distribution of <code>Sale_Price</code> was not precisely normal. The most principled way to proceed in this case would be with a non-parametric test. The Mann-Whitney-Wilcoxon test is not identical to the t-test in its null and alternative hypotheses, but it aims to answer the same question about an association between the binary attribute and the continuous attribute.</p>
+<p>The null and alternative hypotheses for this test are typically defined as follows, so long as the two groups <em>are</em> identically distributed (having the same <em>shape</em> and variance): <span class="math display">\[H_0: \text{ the medians of the two groups are equal }  \]</span> <span class="math display">\[H_a: \text{ the medians of the two groups are NOT equal }   \]</span> If those identical distributions are also symmetric, then Mann-Whitney-Wilcoxon can be interpretted as testing for a difference in means. When the data is not identically distributed, or when the distributions are not symmetric, Mann-Whitney-Wilcoxon is a test of <strong>dominance</strong> between distributions. <strong>Distributional dominance</strong> is the notion that one group’s distribution is located at larger values than another, probabilistically speaking. Formally, a random variable A has dominance over random variable B if <span class="math inline">\(P(A x) \geq P(B\geq x)\)</span> for all <span class="math inline">\(x\)</span>, and for some <span class="math inline">\(x\)</span>, <span class="math inline">\(P(A\geq x) &gt; P(B\geq x)\)</span>.</p>
+<p>We summarize this information in the following table:</p>
+<table class="table">
+<colgroup>
+<col style="width: 58%">
+<col style="width: 41%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Conditions</td>
+<td>Interpretation of Significant<br>
+Mann-Whitney-Wilcoxon Test</td>
+</tr>
+<tr class="even">
+<td>Group distributions are identical in shape,<br>
+variance, and symmetric</td>
+<td>Difference in means</td>
+</tr>
+<tr class="odd">
+<td>Group distributions are identical in shape,<br>
+variance, but not symmetric</td>
+<td>Difference in medians</td>
+</tr>
+<tr class="even">
+<td>Group distributions are identical in shape,<br>
+variance, but not symmetric</td>
+<td>Difference in location.<br>
+(distributional dominance)</td>
+</tr>
+</tbody>
+</table>
+<p>To perform this test, we use the <code>wilcox.test()</code> function, whose inputs are identical to the <code>t.test()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(Sale_Price <span class="sc">~</span> Central_Air, <span class="at">data =</span> ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  Sale_Price by Central_Air
+W = 63164, p-value &lt; 2.2e-16
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+<p>Thus, we make the same conclusion with our non-parametric test. Houses with and without central air should be expected to sell for different prices.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Statistical Foundations</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./02-introduction_ANOVA_regression.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to ANOVA and Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

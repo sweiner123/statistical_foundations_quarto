@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Statistical Foundations - 3&nbsp; Introduction to ANOVA and Linear Regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03-complex_ANOVA_Regression.html" rel="next">
+<link href="./01-introduction_statistics.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to ANOVA and Linear Regression</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Statistical Foundations</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Statistical Foundations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-introduction_statistics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-introduction_ANOVA_regression.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to ANOVA and Linear Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-complex_ANOVA_Regression.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Complex ANOVA and Multiple Linear Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-model_selection.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model Selection</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-diagnostics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Diagnostics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-model_building_scoring.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model Building &amp; Scoring for Prediction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-categorical.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Categorical Data Analysis</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-evp" id="toc-sec-evp" class="nav-link active" data-scroll-target="#sec-evp"><span class="toc-section-number">3.1</span>  Prediction vs.&nbsp;Explanation</a></li>
+  <li><a href="#sec-trainvalidtest" id="toc-sec-trainvalidtest" class="nav-link" data-scroll-target="#sec-trainvalidtest"><span class="toc-section-number">3.2</span>  Honest Assessment</a></li>
+  <li><a href="#bivariate-eda" id="toc-bivariate-eda" class="nav-link" data-scroll-target="#bivariate-eda"><span class="toc-section-number">3.3</span>  Bivariate EDA</a>
+  <ul class="collapse">
+  <li><a href="#continuous-continuous-associations" id="toc-continuous-continuous-associations" class="nav-link" data-scroll-target="#continuous-continuous-associations"><span class="toc-section-number">3.3.1</span>  Continuous-Continuous Associations</a></li>
+  <li><a href="#continuous-categorical-associations" id="toc-continuous-categorical-associations" class="nav-link" data-scroll-target="#continuous-categorical-associations"><span class="toc-section-number">3.3.2</span>  Continuous-Categorical Associations</a></li>
+  </ul></li>
+  <li><a href="#sec-oneway" id="toc-sec-oneway" class="nav-link" data-scroll-target="#sec-oneway"><span class="toc-section-number">3.4</span>  One-Way ANOVA</a>
+  <ul class="collapse">
+  <li><a href="#testing-assumptions" id="toc-testing-assumptions" class="nav-link" data-scroll-target="#testing-assumptions"><span class="toc-section-number">3.4.1</span>  Testing Assumptions</a></li>
+  <li><a href="#kruskal" id="toc-kruskal" class="nav-link" data-scroll-target="#kruskal"><span class="toc-section-number">3.4.2</span>  Kruskal-Wallis</a></li>
+  </ul></li>
+  <li><a href="#sec-posthoc" id="toc-sec-posthoc" class="nav-link" data-scroll-target="#sec-posthoc"><span class="toc-section-number">3.5</span>  ANOVA Post-hoc Testing</a>
+  <ul class="collapse">
+  <li><a href="#sec-tukey" id="toc-sec-tukey" class="nav-link" data-scroll-target="#sec-tukey"><span class="toc-section-number">3.5.1</span>  Tukey-Kramer</a></li>
+  <li><a href="#sec-dunnett" id="toc-sec-dunnett" class="nav-link" data-scroll-target="#sec-dunnett"><span class="toc-section-number">3.5.2</span>  Dunnett’s Test</a></li>
+  </ul></li>
+  <li><a href="#sec-cor" id="toc-sec-cor" class="nav-link" data-scroll-target="#sec-cor"><span class="toc-section-number">3.6</span>  Pearson Correlation</a>
+  <ul class="collapse">
+  <li><a href="#sec-testcor" id="toc-sec-testcor" class="nav-link" data-scroll-target="#sec-testcor"><span class="toc-section-number">3.6.1</span>  Statistical Test</a></li>
+  <li><a href="#effect-of-anomalous-observations" id="toc-effect-of-anomalous-observations" class="nav-link" data-scroll-target="#effect-of-anomalous-observations"><span class="toc-section-number">3.6.2</span>  Effect of Anomalous Observations</a></li>
+  <li><a href="#the-correlation-matrix" id="toc-the-correlation-matrix" class="nav-link" data-scroll-target="#the-correlation-matrix"><span class="toc-section-number">3.6.3</span>  The Correlation Matrix</a></li>
+  </ul></li>
+  <li><a href="#simple-linear-regression" id="toc-simple-linear-regression" class="nav-link" data-scroll-target="#simple-linear-regression"><span class="toc-section-number">3.7</span>  Simple Linear Regression</a>
+  <ul class="collapse">
+  <li><a href="#sec-slrassumptions" id="toc-sec-slrassumptions" class="nav-link" data-scroll-target="#sec-slrassumptions"><span class="toc-section-number">3.7.1</span>  Assumptions of Linear Regression</a></li>
+  <li><a href="#testing-for-association" id="toc-testing-for-association" class="nav-link" data-scroll-target="#testing-for-association"><span class="toc-section-number">3.7.2</span>  Testing for Association</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-slr" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to ANOVA and Linear Regression</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<p>This Chapter aims to answer the following questions:</p>
+
+<li>
+<p>What is a predictive model versus an explanatory model?</p>
+
+</li><li>
+<p>How to perform an honest assessment of a model.</p>
+
+</li><li>
+<p>How to estimate associations.</p>
+<ul>
+<li>
+<p>Continuous-Continuous</p>
+</li><li>
+<p>Continuous-Categorical</p>
+</li><li>
+<p>Pearson’s correlation</p>
+<ul>
+<li>
+<p>Test of Hypothesis</p>
+</li><li>
+<p>Effect of outliers</p>
+</li><li>
+<p>Correlation Matrix</p>
+</li></ul>
+</li><li>
+<p>How to perform ANOVA.</p>
+<ul>
+<li>
+<p>Testing assumptions</p>
+</li><li>
+<p>Kruskal-Wallis</p>
+</li><li>
+<p>Post-hoc tests</p>
+</li></ul>
+</li><li>
+<p>How to perform Simple Linear Regression.</p>
+<ul>
+<li>
+<p>Assumptions</p>
+</li><li>
+<p>Inference</p>
+</li></ul>
+<p>In this chapter, we introduce one of the most commonly used tools in data science: the linear model. We’ll start with some basic terminology. A <strong>linear model</strong> is an equation that typically takes the form <span id="eq-linmod"><span class="math display">\[
+\mathbf{y} = \beta_0 + \beta_1\mathbf{x_1} + \dots + \beta_k\mathbf{x_k} + \boldsymbol \varepsilon
+\tag{3.1}\]</span></span></p>
+<p>The left-hand side of this equation, <span class="math inline">\(\mathbf{y}\)</span> is equivalently called the <strong>target</strong>, <strong>response</strong>, or <strong>dependent</strong> variable. The right-hand side is a linear combination of the columns <span class="math inline">\(\{\mathbf{x_i}\}_{i=1}^{k}\)</span> which are commonly referred to as <strong>explanatory</strong>, <strong>input</strong>, <strong>predictor</strong>, or <strong>independent</strong> variables.</p>
+<section id="sec-evp" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="sec-evp"><span class="header-section-number">3.1</span> Prediction vs.&nbsp;Explanation</h2>
+<p>The purpose of a linear model like Equation (<a href="#eq-linmod">Equation&nbsp;<span class="quarto-unresolved-ref">eq-linmod</span></a>) is generally two-fold:</p>
+<ol>
+<li>
+<p>The model is <strong>predictive</strong> in that it can estimate the value of <span class="math inline">\(y\)</span> for a given combination of the <span class="math inline">\(x\)</span> attributes.</p>
+</li><li>
+<p>The model is <strong>explanatory</strong> in that it can estimate how <span class="math inline">\(y\)</span> changes for a unit increase in a given <span class="math inline">\(x\)</span> attribute, holding all else constant (via the slope parameters <span class="math inline">\(\beta\)</span>).</p>
+<p>However, it’s common for <em>one</em> of these purposes to be more aligned with the specific goals of your project, and it is common to approach the building of such a model differently for each purpose.</p>
+<p>In predictive modeling, you are most interested in how much error your model has on <em>holdout data</em>, that is, validation or test data. This is a notion that we introduce next in Section <a href="#sec-trainvalidtest"><span class="quarto-unresolved-ref">sec-trainvalidtest</span></a>. If good predictions are all you want from your model, you are unlikely to care how many variables (including polynomial and interaction terms) are included in the final model.</p>
+<p>In explanatory modeling, you foremost want a model that is simple to interpret and doesn’t have too many input variables. It’s common to avoid many polynomial and interaction terms for explanatory models. While the error rates on holdout data will still be useful reporting metrics for explanatory models, it will be more important to craft the model for ease of interpretation.</p>
+</li></ol></section>
+<section id="sec-trainvalidtest" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="sec-trainvalidtest"><span class="header-section-number">3.2</span> Honest Assessment</h2>
+<p>When performing predictive or explanatory modeling, we <em>always</em> divide our data into subsets for training, validation, and/or final testing. Because models are prone to discovering small, spurious patterns on the data that is used to create them (the <em>training data</em>), we set aside the <em>validation</em> and <em>testing data</em> to get a clear view of how they might perform on new data that they’ve never seen before. This is a concept that will be revisited several times throughout this text, highlighting its importance to honest assessment of models.</p>
+<p>There is no single right answer for how this division should occur for every data set - the answer depends on a multitude of factors that are beyond the scope of our present discussion. Generally speaking, one expects to keep about 70% of the data for model training purposes, and the remaining 30% for validation and testing. These proportions may change depending on the amount of data available. If one has millions of observations, they can often get away with a much smaller proportion of training data to reduce computation time and increase confidence in validation. If one has substantially fewer observations, it may be necessary to increase the training proportion in order to build a sound model - trading validation confidence for proper training.</p>
+<p>Below we demonstrate one technique for separating the data into just two subsets: training and test. These two subsets will suffice for our analyses in this text. We’ll use 70% of our data for the training set and the remainder for testing.</p>
+<p>Since we are taking a random sample, each time you run this functions you will get a different result. This can be difficult for team members who wish to keep their analyses in sync. To avoid that variation of results, we can provide a “seed” to the internal random number generation process, which ensures that the randomly generated output is the same to all who use that seed.</p>
+<p>The following code demonstrates sampling via the <code>tidyverse</code>. This method requires the use of an id variable. If your data set has a unique identifier built in, you may omit the first line of code (after <code>set.seed()</code>) and use that unique identifier in the third line.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> ames <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>())</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> ames <span class="sc">%&gt;%</span> <span class="fu">sample_frac</span>(<span class="fl">0.7</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">anti_join</span>(ames, train, <span class="at">by =</span> <span class="st">'id'</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2051   82</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 879  82</code></pre>
+</div>
+</div>
+<!-- <li> Sampling via old-fashioned local indexing. This method creates a logical vector (containing the values `TRUE` or `FALSE`) that indicates the training set observations. The opposite vector, `!train_obs` then indicates the test set. The benefit of this method is the storage of this vector that permanently identifies which observations were placed in the training set.  -->
+<!-- ```{r eval=F} -->
+<!-- set.seed(1234) -->
+<!-- train_obs = sample(c(T,F), nrow(ames),replace=T, prob = c(70,30)) -->
+<!-- train = ames[train_obs, ] -->
+<!-- test = ames[!train_obs, ] -->
+<!-- dim(train) -->
+<!-- dim(test) -->
+<!-- ``` -->
+<!-- </ol> -->
+<!-- It's important to note that _even with the same seed_, these two methods will not produce the same result as the randomization contained within them is fundamentally different.  -->
+</section>
+<section id="bivariate-eda" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="bivariate-eda"><span class="header-section-number">3.3</span> Bivariate EDA</h2>
+<p>As stated in Chapter <a href="#sec-intro-stat"><span class="quarto-unresolved-ref">sec-intro-stat</span></a>, exploratory data analysis is the foundation of any successful data science project. As we move on to the discussion of modeling, we begin to explore <em>bivariate</em> relationships in our data. In doing so, we will often explore the input variables’ relationships with the target. <strong>Such exploration should only be done on the training data; we should never let insights from the validation or test data inform our decisions about modeling.</strong></p>
+<p>Bivariate exploratory analysis is often used to assess relationships between two variables. An <strong>association</strong> or <strong>relationship</strong> exists when the expected value of one variable changes at different levels of the other variable. A <strong>linear relationship</strong> between two continuous variables can be inferred when the general shape of a scatter plot of the two variables is a straight line.</p>
+<section id="continuous-continuous-associations" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="continuous-continuous-associations"><span class="header-section-number">3.3.1</span> Continuous-Continuous Associations</h3>
+<p>Let’s conduct a preliminary assessment of the relationship between the size of the house in square feet (via <code>Gr_Liv_Area</code>) and the <code>Sale_Price</code> by creating a scatter plot (only on the training data). Note that we call this a preliminary assessment because we should not declare a statistical relationship without a formal hypothesis test (see Section <a href="#sec-cor"><span class="quarto-unresolved-ref">sec-cor</span></a>).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> train) <span class="sc">+</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Gr_Liv_Area, <span class="at">y =</span> Sale_Price<span class="sc">/</span><span class="dv">1000</span>)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Sales Price (Thousands $)"</span>, <span class="at">x =</span> <span class="st">"Greater Living Area (Sqft)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/scatterplot-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Scatter plot demonstrating a positive linear relationship</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="continuous-categorical-associations" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="continuous-categorical-associations"><span class="header-section-number">3.3.2</span> Continuous-Categorical Associations</h3>
+<p>We’ll also revisit the plots that we created in Section <a href="#sec-eda"><span class="quarto-unresolved-ref">sec-eda</span></a>, this time being careful to use only our training data since our goal is eventually to use a linear model to predict <code>Sale_Price</code>.</p>
+<p>We start by exploring the relationship between the external quality rating of the home (via the ordinal variable <code>Exter_Qual</code> and the <code>Sale_Price</code>).</p>
+<p>The simplest graphic we may wish to create is a bar chart like Figure <a href="#fig-barsale">Figure&nbsp;<span class="quarto-unresolved-ref">fig-barsale</span></a> that shows the average sale price of homes with each value of exterior quality.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(train) <span class="sc">+</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">x=</span>Exter_Qual,<span class="at">y=</span> Sale_Price), </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">stat =</span> <span class="st">"summary"</span>, <span class="at">fun =</span> <span class="st">"mean"</span>) <span class="sc">+</span>                                      </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="cf">function</span>(x) <span class="fu">format</span>(x, <span class="at">scientific =</span> <span class="cn">FALSE</span>)) <span class="co"># Modify formatting of axis</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-barsale" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/fig-barsale-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.1: Bar Chart Comparing Average Sale Price of Homes with each Level of Exterior Quality</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This gives us the idea that there may be an association between these two attributes, but it can be tricky to rely solely on this graph without exploring the overall distribution in sale price for each group. While this chart is great for the purposes of <em>reporting</em> (once we’ve verified the relationship), it’s not the best one for exploratory analysis. The next two charts allow us to have much more information on one graphic.</p>
+<p>The frequency histogram in Figure <a href="#fig-overhistogram">Figure&nbsp;<span class="quarto-unresolved-ref">fig-overhistogram</span></a> allows us to see that much fewer of the homes have a rating of <code>Excellent</code> versus the other tiers, a fact that makes it difficult to compare the distributions. To normalize that quantity and compare the raw probability densities, we can change our axes to density (which is analogous to percentage) and employ a kernel density estimator with the <code>geom_density</code> plot as shown in Figure @ref(fig:overhistogramdensitykernel). We can then clearly see that as the exterior quality of the home “goes up” (in the ordinal sense, not in the linear sense), the sale price of the home also increases.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(train,<span class="fu">aes</span>(<span class="at">x=</span>Sale_Price<span class="sc">/</span><span class="dv">1000</span>, <span class="at">fill=</span>Exter_Qual)) <span class="sc">+</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">position=</span><span class="st">"identity"</span>) <span class="sc">+</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Price (Thousands $)"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-overhistogram" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/fig-overhistogram-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.2: Histogram: Frequency of Sale_Price for varying qualities of home exterior</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames,<span class="fu">aes</span>(<span class="at">x=</span>Sale_Price<span class="sc">/</span><span class="dv">1000</span>, <span class="at">fill=</span>Exter_Qual)) <span class="sc">+</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">position=</span><span class="st">"identity"</span>) <span class="sc">+</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Sales Price (Thousands $)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-overhistogramdensitykernel" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/fig-overhistogramdensitykernel-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.3: Histogram: Density of Sale_Price for varying qualities of home exterior</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To further explore the location and spread of the data, we can create box-plots for each group using the following code:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> train, <span class="fu">aes</span>(<span class="at">y =</span> Sale_Price<span class="sc">/</span><span class="dv">1000</span>, <span class="at">x =</span> <span class="st">`</span><span class="at">Exter_Qual</span><span class="st">`</span>, <span class="at">fill =</span> <span class="st">`</span><span class="at">Exter_Qual</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Sales Price (Thousands $)"</span>, <span class="at">x =</span> <span class="st">"Exterior Quality Category"</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">fun =</span> mean, <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">shape =</span> <span class="dv">20</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">fill =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Blues"</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-multiboxplot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/fig-multiboxplot-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.4: Box Plots of Sale_Price for each level of Exter_Qual</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that we’ve highlighted the mean on each box-plot for the purposes of comparison. We now have a hypothesis that we may want to formally test. After all, it is not good practice to look at Figures <a href="#fig-overhistogramdensitykernel">Figure&nbsp;<span class="quarto-unresolved-ref">fig-overhistogramdensitykernel</span></a>) and <a href="#fig-multiboxplot">Figure&nbsp;<span class="quarto-unresolved-ref">fig-multiboxplot</span></a>) and <em>declare</em> that a statistical difference exists. While we do, over time, get a feel for which visually apparent relationships turn out to be statistically significant, it’s <em>imperative</em> that we conduct formal testing before declaring such insights to a colleague or stakeholder.</p>
+<p>If we want to test whether the <code>Sale_Price</code> is different for the different values of <code>Exter_Qual</code>, we have to reach for the multi-group alternative to the 2-sample t-test. This is called <strong>Analysis of Variance</strong>, or <strong>ANOVA</strong> for short.</p>
+</section>
+</section>
+<section id="sec-oneway" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="sec-oneway"><span class="header-section-number">3.4</span> One-Way ANOVA</h2>
+<p><strong>One-way ANOVA</strong> aims to determine whether there is a difference in the mean of a continuous attribute across levels of a categorical attribute. Sound like a two-sample t-test? Indeed, it’s the extension of that test to more than two groups. Performing ANOVA with a binary input variable is mathematically identical to the two-sample t-test, as are it’s <strong>assumptions</strong>:</p>
+<ol>
+<li>
+<p>The observations are independent</p>
+</li><li>
+<p>The model residuals are normally distributed</p>
+</li><li>
+<p>The variances for each group are equal</p>
+</li></ol>
+<p>A one-way ANOVA refers to a single hypothesis test, which is <span class="math inline">\(H_{0}: \mu_{1}=\mu_{2}=...\mu_{k}\)</span> for a predictor variable with <span class="math inline">\(k\)</span> levels against the alternative of at least one difference. Although a one-way ANOVA is designed to assess whether or not there is a significant difference within the mean values of the response with respect to the different levels of the predictor variable, we can draw some parallel to the regression model. For example, if we have <span class="math inline">\(k\)</span>=4, then we can let (x_a), (x_b), and (x_c) be 3 reference-coded dummy variables for the levels: <code>a</code>, <code>b</code>, <code>c</code>, and <code>d</code>. Note that we only have 3 dummy variables because one gets left out for the reference level, in this case it is <code>d</code>. The linear model is of the following form:</p>
+<p><span id="eq-anova1"><span class="math display">\[
+y=\beta\_0 + \beta\_ax_a+\beta\_bx_b+\beta\_cx_c + \varepsilon  
+\tag{3.2}\]</span></span></p>
+<p>If we define <span class="math inline">\(x_a\)</span> as 1 if the observation belongs to level <code>a</code> and 0 otherwise, and the same definition for <span class="math inline">\(x_b\)</span> and <span class="math inline">\(x_c\)</span>, then this is called <em>reference-level coding</em> (this will change for effects-level coding). The predicted values in <a href="#eq-anova1">Equation&nbsp;<span class="quarto-unresolved-ref">eq-anova1</span></a> is basically the predicted mean of the response within the 4 levels of the predictor variable.<br>
+</p>
+<ul>
+<li>
+<p><span class="math inline">\(\beta_0\)</span> represents the mean of reference group, group <code>d</code>.</p>
+</li><li>
+<p><span class="math inline">\(\beta_a, \beta_b, \beta_c\)</span> all represent the <em>difference</em> in the respective group means compared to the reference level. Positive values thus reflect a group mean that is higher than the reference group, and negative values reflect a group mean lower than the reference group.</p>
+</li><li>
+<p><span class="math inline">\(\varepsilon\)</span> is called the <strong>error</strong>.</p>
+</li></ul>
+<p>A <em>one-way</em> ANOVA model only contains a single input variable of interest. Equation <a href="#eq-anova1">Equation&nbsp;<span class="quarto-unresolved-ref">eq-anova1</span></a>, while it has 3 dummy variable inputs, only contains a single nominal attribute. In <a href="#sec-mlr"><span class="quarto-unresolved-ref">sec-mlr</span></a>, we will add more inputs to the equation via two-way ANOVA and multivariate regression models.</p>
+<p>ANOVA is used to test the following hypothesis: <span class="math display">\[H_0: \beta_a=\beta_b=\beta_c = 0 \quad\text{(i.e. all group means are equal)}\]</span> <span class="math display">\[H_0: \beta_a\neq0\mbox{ or }\beta_b\neq0 \mbox{ or } \beta_c \neq 0 \quad\text{(i.e. at least one is different)}\]</span> Both the <code>lm()</code> function and the <code>aov()</code> function will provide the p-values to test the hypothesis above, the only difference between the two functions is that <code>lm()</code> will also provide the user with the coefficient of determinination, <span class="math inline">\(R^2\)</span>, which tells you how much of the variation in <span class="math inline">\(y\)</span> is accounted for by your categorical input.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ames_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(Sale_Price <span class="sc">~</span> Exter_Qual, <span class="at">data =</span> train)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(ames_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: Sale_Price
+             Df     Sum Sq    Mean Sq F value    Pr(&gt;F)    
+Exter_Qual    3 6.6913e+12 2.2304e+12  701.83 &lt; 2.2e-16 ***
+Residuals  2047 6.5054e+12 3.1780e+09                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ames_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Sale_Price ~ Exter_Qual, data = train)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-215904  -32910   -6147   24793  516090 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    207785       3176  65.416  &lt; 2e-16 ***
+Exter_Qual.L   215078       8353  25.749  &lt; 2e-16 ***
+Exter_Qual.Q    44553       6353   7.013 3.15e-12 ***
+Exter_Qual.C     6994       3308   2.114   0.0346 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 56370 on 2047 degrees of freedom
+Multiple R-squared:  0.507, Adjusted R-squared:  0.5063 
+F-statistic: 701.8 on 3 and 2047 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ames_aov &lt;- aov(Sale_Price ~ Exter_Qual, data = train) # Same thing with aov() function instead</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(ames_aov) # R-squared not reported here. </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The p-value for the ANOVA hypothesis that all the groups have the same mean sale price is incredibly small, at <span class="math inline">\(2.2\times10^{-16}\)</span>. This means it is extraordinarily improbable that we would have observed these differences in means, or a more extreme difference, if the population group means were equal. Thus, we reject our null hypothesis and conclude that there is an association between the exterior quality of a home and the price of the home.</p>
+<p>We note, based on the <span class="math inline">\(R^2\)</span> statistics, that the exterior quality rating can account for almost half the variation in sales price! Adjusted <span class="math inline">\(R^2\)</span> is a statistic that takes into account the number of variables in the model. The difference between <span class="math inline">\(R^2\)</span> and adjusted <span class="math inline">\(R^2\)</span> will be more thoroughly discussed in Chapter <a href="#sec-mlr"><span class="quarto-unresolved-ref">sec-mlr</span></a>.</p>
+<p>We can also confirm what we know about the predictions from ANOVA, that there are only <span class="math inline">\(k\)</span> unique predictions from an ANOVA with <span class="math inline">\(k\)</span> groups (the predictions being the group means), using the <code>predict</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>train<span class="sc">$</span>pred_anova <span class="ot">&lt;-</span> <span class="fu">predict</span>(ames_lm, <span class="at">data =</span> train)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>train<span class="sc">$</span>resid_anova <span class="ot">&lt;-</span> <span class="fu">resid</span>(ames_lm, <span class="at">data =</span> train)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>(<span class="at">model_output =</span> train <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(Sale_Price, pred_anova, resid_anova))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2,051 × 3
+   Sale_Price pred_anova resid_anova
+        &lt;int&gt;      &lt;dbl&gt;       &lt;dbl&gt;
+ 1     232600    228910.       3690.
+ 2     166000    228910.     -62910.
+ 3     170000    142107.      27893.
+ 4     252000    228910.      23090.
+ 5     134000    142107.      -8107.
+ 6     164700    228910.     -64210.
+ 7     193500    142107.      51393.
+ 8     118500    142107.     -23607.
+ 9      94000    142107.     -48107.
+10     111250    142107.     -30857.
+# … with 2,041 more rows</code></pre>
+</div>
+</div>
+<section id="testing-assumptions" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="testing-assumptions"><span class="header-section-number">3.4.1</span> Testing Assumptions</h3>
+<p>We can use the default plots from the <code>lm()</code> function to check the normality assumption.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_lm)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-anovaplots" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/fig-anovaplots-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.5: Of the 4 default plots from lm(), we are presently interested in the top-right QQ plot that tests our assumption of normally distributed residuals.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the top-right plot in Figure <a href="#fig-anovaplots">Figure&nbsp;<span class="quarto-unresolved-ref">fig-anovaplots</span></a> we verify again the <em>approximate</em> normality of sale price. To test for the third assumption of equal variances, we opt for a formal test like Levene’s (which depends on normality and can be found in the <code>car</code> package) or Fligner’s (which does not depend on normality and exists in the <code>stats</code> package). In both cases, the null hypothesis is equal variances: <span class="math display">\[H_0: \sigma_a^2 =\sigma_b^2 =\sigma_c^2=\sigma_d^2 \quad  \text{i.e., the groups have equal variance}\]</span> <span class="math display">\[H_a: \text{at least one group's variance is different}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stats)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">leveneTest</span>(Sale_Price <span class="sc">~</span> Exter_Qual, <span class="at">data =</span> train) <span class="co"># Most popular, but depends on Normality</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Levene's Test for Homogeneity of Variance (center = median)
+        Df F value    Pr(&gt;F)    
+group    3  76.879 &lt; 2.2e-16 ***
+      2047                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fligner.test</span>(Sale_Price <span class="sc">~</span> Exter_Qual, <span class="at">data =</span> train) <span class="co"># DOES NOT depend on Normality</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Fligner-Killeen test of homogeneity of variances
+
+data:  Sale_Price by Exter_Qual
+Fligner-Killeen:med chi-squared = 206.26, df = 3, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>And in both cases, we’re forced to reject the null hypothesis of equal variances. A non-parametric version of the ANOVA test, the Kruskal-Wallis test, is more suitable to this particular case. Non-parametric tests do not have the same <em>statistical power</em> to detect differences between groups. <strong>Statistical power</strong> is the probability of detecting an effect, if there is a true effect present to detect. We should opt for these tests in situations where our data is ordinal or otherwise violates the assumptions of normality or equal variances in ways that cannot be fixed by logarithmic or other similar transformation.</p>
+</section>
+<section id="kruskal" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="kruskal"><span class="header-section-number">3.4.2</span> Kruskal-Wallis</h3>
+<p>The Kruskal-Wallis test, proposed in 1952, is equivalent to a parametric one-way ANOVA where the data values have been replaced with their ranks (i.e.&nbsp;largest value = 1, second largest value = 2, etc.). When the data <em>is not</em> normally distributed but <em>is</em> identically distributed (having the same shape and variance), the Kruskal-Wallis test can be considered a test for differences in medians. If those identical distributions are also symmetric, then Kruskal-Wallis can be interpretted as testing for a difference in means. When the data is not identically distributed, or when the distributions are not symmetric, Kruskal-Wallis is a test of <strong>dominance</strong> between distributions. <strong>Distributional dominance</strong> is the notion that one group’s distribution is located at larger values than another, probabilistically speaking. Formally, a random variable A has dominance over random variable B if <span class="math inline">\(P(A\geq x) \geq P(B\geq x)\)</span> for all <span class="math inline">\(x\)</span>, and for some <span class="math inline">\(x\)</span>, <span class="math inline">\(P(A\geq x) &gt; P(B\geq x)\)</span>.</p>
+<p>We summarize this information in the following table:</p>
+<table class="table">
+<colgroup>
+<col style="width: 60%">
+<col style="width: 39%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Conditions</td>
+<td>Interpretation of Significant<br>
+Kruskal-Wallis Test</td>
+</tr>
+<tr class="even">
+<td>Group distributions are identical in shape,<br>
+variance, and symmetric</td>
+<td>Difference in means</td>
+</tr>
+<tr class="odd">
+<td>Group distributions are identical in shape,<br>
+variance, but not symmetric</td>
+<td>Difference in medians</td>
+</tr>
+<tr class="even">
+<td>Group distributions are not identical in shape,<br>
+variance, and are not symmetric</td>
+<td>Difference in location.<br>
+(distributional dominance)</td>
+</tr>
+</tbody>
+</table>
+<p>Implementing the Kruskal-Wallis test in R is simple:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(Sale_Price <span class="sc">~</span> Exter_Qual, <span class="at">data =</span> train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  Sale_Price by Exter_Qual
+Kruskal-Wallis chi-squared = 975.98, df = 3, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Our conclusion would be that the distribution of sale price is different across different levels of exterior quality.</p>
+</section>
+</section>
+<section id="sec-posthoc" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="sec-posthoc"><span class="header-section-number">3.5</span> ANOVA Post-hoc Testing</h2>
+<p>After performing an ANOVA and learning that there is a difference between the groups of data, our next natural question ought to be <em>which groups of data are different, and how?</em> In order to explore this question, we must first consider the notion of <strong>experimentwise error</strong>. When conducting multiple hypothesis tests simultaneously, the experimentwise error rate is the proportion of time you expect to make an error in at least one test.</p>
+<p>Let’s suppose we are comparing grocery spending on 4 different credit card rewards programs. If we’d like to compare the rewards programs pairwise, that entails 6 different hypothesis tests (each is a two-sample t-test). If we keep a confidence level of <span class="math inline">\(\alpha = 0.05\)</span> and subsequently view “being wrong in one test” as a random event happening with probability <span class="math inline">\(p=0.05\)</span> then our probability of being wrong <em>in at least</em> one test out of 6 could be as great as 0.26!</p>
+<p>To control this experiment-wise error rate, we must lower our significance thresholds to account for it. Alternatively, we can view this as an adjustment of our p-values higher while keeping our significance threshold fixed as usual. This is typically the approach taken, as we prefer to fix our significance thresholds in accordance with previous literature or industry standards. There are many methods of adjustment that have been proposed over the years for this purpose. Here, we consider two popular methods: Tukey’s test for pairwise comparisons and Dunnett’s test for control group comparisons. If the reader finds themselves in a situation that doesn’t fit the prescription of either of these methods, we suggest looking next at the modified Bonferroni correction or the notion of false discovery rates proposed by Benjamini and Hochberg in 1995.</p>
+<section id="sec-tukey" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="sec-tukey"><span class="header-section-number">3.5.1</span> Tukey-Kramer</h3>
+<p>If our objective is to compare each group to every other group then Tukey’s test of honest significant differences, also known as the Tukey-Kramer test is probably the most widely-available and popular corrections in practice. However, it should be noted that Tukey’s test <em>should not</em> be used if one does not plan to make all pairwise comparisons. If only a subset of comparisons are of interest to the user (like comparisons only to a control group) then one should opt for the Dunnett or a modified Bonferroni correction.</p>
+<p>To employ Tukey’s HSD in R, we must use the <code>aov()</code> function to create our ANOVA object rather than the <code>lm()</code> function. The output of the test shows the difference in means and the p-value for testing the null hypothesis that the means are equal (i.e.&nbsp;that the differences are equal to 0).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ames_aov <span class="ot">&lt;-</span> <span class="fu">aov</span>(Sale_Price <span class="sc">~</span> Exter_Qual, <span class="at">data =</span> train)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>tukey.ames <span class="ot">&lt;-</span> <span class="fu">TukeyHSD</span>(ames_aov)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tukey.ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = Sale_Price ~ Exter_Qual, data = train)
+
+$Exter_Qual
+                       diff       lwr       upr p adj
+Typical-Fair       57887.91  30194.31  85581.52 5e-07
+Good-Fair         144690.25 116739.87 172640.63 0e+00
+Excellent-Fair    291684.79 259752.41 323617.16 0e+00
+Good-Typical       86802.34  79910.03  93694.64 0e+00
+Excellent-Typical 233796.87 216886.62 250707.12 0e+00
+Excellent-Good    146994.54 129666.98 164322.10 0e+00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">10</span>,<span class="dv">4</span>,<span class="dv">2</span>))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(tukey.ames, <span class="at">las =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-tukey" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/fig-tukey-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.6: Confidence intervals for mean differences adjusted via Tukey-Kramer</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The p-values in this table have been adjusted higher to account for the possible experimentwise error rate. For every pairwise comparison shown, we reject the null hypothesis and conclude that the mean sales price of the homes is different for each level of <code>Exter_Qual</code>. Furthermore, Figure <a href="#fig-tukey">Figure&nbsp;<span class="quarto-unresolved-ref">fig-tukey</span></a> shows us experiment-wise (family-wise) adjusted confidence intervals for the differences in means for each pair. The plot option <code>las=1</code> guides the axis labels. Type <code>?par</code> for a list of plot options for base R, including an explanation of <code>las</code>.</p>
+</section>
+<section id="sec-dunnett" class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="sec-dunnett"><span class="header-section-number">3.5.2</span> Dunnett’s Test</h3>
+<p>If the plan is to make fewer comparisons, specifically just <span class="math inline">\(k-1\)</span> comparisons where <span class="math inline">\(k\)</span> is the number of groups in your data (indicating you plan to compare all the groups to one specific group, usually the control group), then Dunnett’s test would be preferrable to the Tukey-Kramer test. If all pairwise comparisons are not made, the Tukey-Kramer test is overly conservative, creating a confidence level that is much lower than specified by the user. Dunnett’s test factors in fewer comparisons and thus should not be used for tests of all pairwise comparisons.</p>
+<p>To use Dunnett’s test, we must add the <code>DescTools</code> package to our library. The control group to which all other groups will be compared is designated by the <code>control=</code> option.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DunnettTest</span>(<span class="at">x =</span> train<span class="sc">$</span>Sale_Price, <span class="at">g =</span> train<span class="sc">$</span>Exter_Qual, <span class="at">control =</span> <span class="st">'Typical'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  Dunnett's test for comparing several treatments with a control :  
+    95% family-wise confidence level
+
+$Typical
+                       diff    lwr.ci    upr.ci    pval    
+Fair-Typical      -57887.91 -83628.55 -32147.28 2.6e-07 ***
+Good-Typical       86802.34  80396.08  93208.59 &lt; 2e-16 ***
+Excellent-Typical 233796.87 218079.15 249514.60 &lt; 2e-16 ***
+
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>In the output from Dunnett’s test, we notice the p-value comparing <code>Fair</code> to <code>Typical</code> exterior qualities is lower than it was in the Tukey-Kramer test. This is consistent with our expectations for a test that isn’t controlling for as many comparisons; it makes a smaller upward adjustment of p-values to satisfy a given experiment-wise error rate.</p>
+</section>
+</section>
+<section id="sec-cor" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="sec-cor"><span class="header-section-number">3.6</span> Pearson Correlation</h2>
+<p>ANOVA is used to formally test the relationship between a categorical variable and a continuous variable. To formally test the (linear) relationship between two continuous attributes, we introduce <strong>Pearson correlation</strong>, commonly referred to as simply <strong>correlation</strong>. Correlation is a number between -1 and 1 which measures the strength of a linear relationship between two continuous attributes.</p>
+<p>Negative values of correlation indicate a <em>negative linear relationship</em>, meaning that as one of the variables increases, the other tends to decrease. Similarly, positive values of correlation indicate a <em>positive linear relationship</em> meaning that as one of the variables increases, the other tends to increase. Absolute values of correlation equal to 1 indicate a perfect linear relationship. For example, if our data had a column for “mile time in minutes” and a column for “mile time in seconds”, these two columns would have a correlation of 1 due to the fact that there are 60 seconds in a minute. A correlation value near 0 indicates that the variables have no linear relationship.</p>
+<p>It’s important to emphasize that Pearson correlation is only designed to detect <em>linear</em> associations between variables. Even when a correlation between two variables is 0, the two variables may still have a very clear association, whether it be quadratic, cyclical, or some other nonlinear pattern of association. Figure @ref(fig:correlation) illustrates all of these statements. On top of each scatter plot, the correlation coefficient is shown. The middle row of this figure aims to illustrate that a perfect correlation has nothing to do with the <em>magnitude</em> or <em>slope</em> of the relationship. In the center image, middle row, we note that the correlation is undefined for any pair that includes a constant variable. In that image, the value of <span class="math inline">\(y\)</span> is constant across the sample. Equation @ref(eq:correlation) makes this mathematically clear.</p>
+<div id="fig-correlation" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/correlation.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.7: ‘Examples of relationships and their associated correlations’</figcaption><p></p>
+</figure>
+</div>
+<p>The population correlation parameter is denoted <span class="math inline">\(\rho\)</span> and estimated by the sample correlation, denoted as <span class="math inline">\(r\)</span>. The formula for the sample correlation between columns of data <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{y}\)</span> is</p>
+<p><span id="eq-correlation"><span class="math display">\[
+r = \frac{\sum_{i=1}^n (x_i-\bar{x})(y_i-\bar{x})}{\sqrt{\sum_{i=1}^n (x_i-\bar{x})^2\sum_{i=1}^n(y_i-\bar{x})^2}}.
+\tag{3.3}\]</span></span></p>
+<p>Note that with <em>centered</em> variable vectors <span class="math inline">\(\mathbf{x_c}\)</span> and <span class="math inline">\(\mathbf{y_c}\)</span> this formula becomes much cleaner with linear algebra notation:</p>
+<p><span id="eq-veccorrelation"><span class="math display">\[
+r = \frac{\mathbf{x_c}^T\mathbf{y_c}}{\|\mathbf{x_c}\|\|\mathbf{y_c}\|}.
+\tag{3.4}\]</span></span></p>
+<p>It is interesting to note that Equation <a href="#eq-veccorrelation">Equation&nbsp;<span class="quarto-unresolved-ref">eq-veccorrelation</span></a> is identical to the formula for the cosine of the angle between to vectors. While this geometrical relationship does not benefit our intuition<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, it is noteworthy nonetheless.</p>
+<p>Pearson’s correlation can be calculated in R with the built in <code>cor()</code> function, with the two continuous variables as input:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(train<span class="sc">$</span>Gr_Liv_Area,train<span class="sc">$</span>Sale_Price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.698509</code></pre>
+</div>
+</div>
+<section id="sec-testcor" class="level3" data-number="3.6.1">
+<h3 data-number="3.6.1" class="anchored" data-anchor-id="sec-testcor"><span class="header-section-number">3.6.1</span> Statistical Test</h3>
+<p>To test the statistical significance of correlation, we use a t-test with the null hypothesis that the correlation is equal to 0: <span class="math display">\[H_0: \rho = 0\]</span> <span class="math display">\[H_a: \rho \neq 0\]</span> If we can reject the null hypothesis, then we declare a significant linear association between the two variables. The <code>cor.test()</code> function in R will perform the test:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(train<span class="sc">$</span>Gr_Liv_Area,train<span class="sc">$</span>Sale_Price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  train$Gr_Liv_Area and train$Sale_Price
+t = 44.185, df = 2049, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.6756538 0.7200229
+sample estimates:
+     cor 
+0.698509 </code></pre>
+</div>
+</div>
+<p>We conclude that <code>Gr_Liv_Area</code> has a linear association with Sale_Price.</p>
+<p>It must be noted that this t-test for Pearson’s correlation is not free from assumptions. In fact, there are 4 assumptions that must be met, and they are detailed in Section <a href="#sec-slrassumptions"><span class="quarto-unresolved-ref">sec-slrassumptions</span></a>.</p>
+</section>
+<section id="effect-of-anomalous-observations" class="level3" data-number="3.6.2">
+<h3 data-number="3.6.2" class="anchored" data-anchor-id="effect-of-anomalous-observations"><span class="header-section-number">3.6.2</span> Effect of Anomalous Observations</h3>
+<p>One final nuance that is important to note is the effect of anomalous observations on correlation. In Figure <a href="#fig-nocor">Figure&nbsp;<span class="quarto-unresolved-ref">fig-nocor</span></a> we display 30 random 2-dimensional data points <span class="math inline">\((x,y)\)</span> with no linear relationship.</p>
+<div class="cell" data-layout-align="center" data-fig="true">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">11</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-nocor" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/fig-nocor-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.8: The variables x and y have no correlation</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The correlation is not exactly zero (we wouldn’t expect perfection from random data) but it is very close at 0.002.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  x and y
+t = 0.012045, df = 28, p-value = 0.9905
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.3582868  0.3622484
+sample estimates:
+        cor 
+0.002276214 </code></pre>
+</div>
+</div>
+<p>Next, we’ll add a single anomalous observation to our data and see how it affects both the correlation value and the correlation test.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">31</span>] <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>y[<span class="dv">31</span>] <span class="ot">=</span> <span class="dv">50</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  x and y
+t = 5.803, df = 29, p-value = 2.738e-06
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.5115236 0.8631548
+sample estimates:
+      cor 
+0.7330043 </code></pre>
+</div>
+</div>
+<p>The correlation jumps to 0.73 from 0.002 and is declared strongly significant! Figure <a href="#fig-extremenocor">Figure&nbsp;<span class="quarto-unresolved-ref">fig-extremenocor</span></a> illustrates the new data. This simple example shows why exploratory data analysis is so important! If we don’t explore our data and detect anomalous observations, we might improperly declare relationships are significant when they are driven by a single observation or a small handful of observations.</p>
+<div class="cell" data-layout-align="center" data-fig="true">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-extremenocor" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/fig-extremenocor-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.9: A single anomalous observation creates strong correlation (0.73) where there previously was none</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-correlation-matrix" class="level3" data-number="3.6.3">
+<h3 data-number="3.6.3" class="anchored" data-anchor-id="the-correlation-matrix"><span class="header-section-number">3.6.3</span> The Correlation Matrix</h3>
+<p>It’s common to consider and calculate all pairwise correlations between variables in a dataset. If many attributes share a high degree of mutual correlation, this can cause problems for regression as will be discussed in Chapter 5. The pairwise correlations are generally arranged in an array called the <strong>correlation matrix</strong>, where the <span class="math inline">\((i,j)^{th}\)</span> entry is the correlation between the <span class="math inline">\(i^{th}\)</span> variable and <span class="math inline">\(j^{th}\)</span> variable in your list. To compute the correlation matrix, we again use the <code>cor()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(train[, <span class="fu">c</span>(<span class="st">'Year_Built'</span>,<span class="st">'Total_Bsmt_SF'</span>,<span class="st">'First_Flr_SF'</span>,<span class="st">'Gr_Liv_Area'</span>,<span class="st">'Sale_Price'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Year_Built Total_Bsmt_SF First_Flr_SF Gr_Liv_Area Sale_Price
+Year_Built     1.0000000     0.4037104    0.3095407   0.2454325  0.5668889
+Total_Bsmt_SF  0.4037104     1.0000000    0.8120419   0.4643838  0.6276502
+First_Flr_SF   0.3095407     0.8120419    1.0000000   0.5707205  0.6085229
+Gr_Liv_Area    0.2454325     0.4643838    0.5707205   1.0000000  0.6985090
+Sale_Price     0.5668889     0.6276502    0.6085229   0.6985090  1.0000000</code></pre>
+</div>
+</div>
+<p>Not surprisingly, we see strong positive correlation between the square footage of the basement and that of the first floor, and also between all of the area variables and the sale price. As demonstrated by Figures <a href="#fig-correlation">Figure&nbsp;<span class="quarto-unresolved-ref">fig-correlation</span></a> and <a href="#fig-extremenocor">Figure&nbsp;<span class="quarto-unresolved-ref">fig-extremenocor</span></a>, raw correlation values can be misleading and it’s unwise to calculate them without a scatter plot for context. The <code>pairs()</code> function in base R provides a simple matrix of scatterplots for this purpose.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(train[, <span class="fu">c</span>(<span class="st">'Year_Built'</span>,<span class="st">'Total_Bsmt_SF'</span>,<span class="st">'First_Flr_SF'</span>,<span class="st">'Gr_Liv_Area'</span>,<span class="st">'Sale_Price'</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="simple-linear-regression" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="simple-linear-regression"><span class="header-section-number">3.7</span> Simple Linear Regression</h2>
+<p>After learning that two variables share a linear relationship, the next question is natural: <em>what is that relationship?</em> How much,on average, should we expect one variable to change as the other changes by a single unit? Simple linear regression answers this question by creating a linear equation that best represents the relationship in the sense that it minimizes the squared error between the observed data and the model predictions (i.e.&nbsp;the sum of the squared residuals). The simple linear regression equation is typically written <span class="math display">\[\begin{equation}
+y=\beta_0 + \beta_1x + \varepsilon
+(\#eq:slr)
+\end{equation}\]</span> where <span class="math inline">\(\beta_0\)</span>, the <strong>intercept</strong>, gives the expected value of <span class="math inline">\(y\)</span> when <span class="math inline">\(x=0\)</span> and <span class="math inline">\(\beta_1\)</span>, the <strong>slope</strong> gives the expected change in <span class="math inline">\(y\)</span> for a one-unit increase in <span class="math inline">\(x\)</span>. The <strong>error</strong>, <span class="math inline">\(\varepsilon\)</span> is the amount each individual <span class="math inline">\(y\)</span> differs from the population line (we would not expect all values of <span class="math inline">\(y\)</span> to fall directly on the line). When we use a sample of data to estimate the true population line, we get our prediction equation or <span class="math inline">\(\hat{y}=\hat{\beta}_0 + \hat{\beta}_1x\)</span>. Residuals from the predicted line is defined as <span class="math inline">\(e=y-\hat{y}\)</span>. <em>Ordinary Least Squares seeks to minimize the sum of squared residuals or sum of squared error</em>. That objective is known as a <strong>loss function</strong>. The sum of squared error (SSE) or equivalently the mean squared error (MSE) loss functions are by far the most popular loss functions for continuous prediction problems.</p>
+<p>We should note that SSE is not the <em>only</em> loss function at our disposal. Minimizing the <em>mean absolute error</em> (MAE) is common in situations with a highly skewed response variable (squaring very large errors gives those observations in the tail too much influence on the regression as we will later discuss). Using MAE to drive our loss function gives us predictions that are conditional <em>medians</em> of the response, given the input data. Other loss functions, like Huber’s M function, are also used to handle problems with influential observations as discussed in Chapter 5.</p>
+<p>As we mentioned in Section <a href="#sec-evp"><span class="quarto-unresolved-ref">sec-evp</span></a>, a simple linear regression serves two purposes:</p>
+<ol>
+<li>
+<p>to predict the expected value of <span class="math inline">\(y\)</span> for each value of <span class="math inline">\(x\)</span> and</p>
+</li><li>
+<p>to explain <em>how</em> <span class="math inline">\(y\)</span> is expected to change for a unit change in <span class="math inline">\(x\)</span>.</p>
+</li></ol>
+<p>In order to accurately use a regression for the second purpose, however, we must first meet assumptions with our data.</p>
+<section id="sec-slrassumptions" class="level3" data-number="3.7.1">
+<h3 data-number="3.7.1" class="anchored" data-anchor-id="sec-slrassumptions"><span class="header-section-number">3.7.1</span> Assumptions of Linear Regression</h3>
+<p>Linear regression, in particular the hypothesis tests that are generally performed as part of linear regression, has 4 assumptions:</p>
+<ol>
+<li>
+<p>The expected value of <span class="math inline">\(y\)</span> is linear in <span class="math inline">\(x\)</span> (proper model specification).</p>
+</li><li>
+<p>The random errors are independent.</p>
+</li><li>
+<p>The random errors are normally distributed.</p>
+</li><li>
+<p>The random errors have equal variance (homoskedasticity).</p>
+</li></ol>
+<p>It must now be noted that these assumptions are also in effect for the test of Pearson’s correlation in Section <a href="#sec-testcor"><span class="quarto-unresolved-ref">sec-testcor</span></a>, because the tests in simple linear regression are mathematically equivalent to that test. When these assumptions are not met, another approach to testing the significance of a linear relationship should be considered. The most common non-parametric approach to testing for an association between two continuous variables is Spearman’s correlation. Spearman’s correlation does not limit its findings to linear relationships; any monotonic relationship (one that is always increasing or always decreasing) will cause Spearman’s correlation to be significant. Similar to the approach taken by Kruskal-Wallis, Spearman’s correlation replaces the data with its ranks and computes Pearson’s correlation on the ranks. The same <code>cor</code> and <code>cor.test()</code> functions can be used; simply specify the <code>method='spearman'</code> option.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(train<span class="sc">$</span>Gr_Liv_Area,train<span class="sc">$</span>Sale_Price, <span class="at">method =</span> <span class="st">'spearman'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(train$Gr_Liv_Area, train$Sale_Price, method =
+"spearman"): Cannot compute exact p-value with ties</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Spearman's rank correlation rho
+
+data:  train$Gr_Liv_Area and train$Sale_Price
+S = 408364087, p-value &lt; 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+      rho 
+0.7160107 </code></pre>
+</div>
+</div>
+</section>
+<section id="testing-for-association" class="level3" data-number="3.7.2">
+<h3 data-number="3.7.2" class="anchored" data-anchor-id="testing-for-association"><span class="header-section-number">3.7.2</span> Testing for Association</h3>
+<p>The statistical test of correlation is mathematically equivalent to testing the hypothesis that the slope parameter in Equation @ref(eq:slr) is zero. This t-test is part of the output from any linear regression function, like <code>lm()</code> which we saw in Section <a href="#sec-oneway"><span class="quarto-unresolved-ref">sec-oneway</span></a>. Let’s confirm this using the example from the Section <a href="#sec-testcor"><span class="quarto-unresolved-ref">sec-testcor</span></a> where we investigate the relationship between <code>Gr_Liv_Area</code> and <code>Sale_Price</code>. Again, the t-test in the output tests the following hypothesis: <span class="math display">\[H_0: \beta_1=0\]</span> <span class="math display">\[H_a: \beta_1 \neq 0\]</span> The first thing we will do after creating the linear model is check our assumption using the default plots from <code>lm()</code> . From these four plots we will be most interested in the first two.</p>
+<p>In the top left plot, we are visually checking for homoskedasticity. We’d like to see the variability of the points remain constant from left to right on this chart, indicating that the errors have constant variance for each value of y. We do not want to see any fan shapes in this chart. Unfortunately, we do see just that: the variability of the errors is much smaller for smaller values of Sale Price than it is for larger values of Sale Price.</p>
+<p>In the top right plot, we are visually checking for normality of errors. We’d like to see the QQ-plot indicate normality with all the points roughly following the line. Unfortunately, we do not see that here. The errors do not appear to be normally distributed.</p>
+<div class="cell" data-layout-align="center" data-fig="true">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>slr <span class="ot">&lt;-</span> <span class="fu">lm</span>(Sale_Price <span class="sc">~</span> Gr_Liv_Area, <span class="at">data=</span>train)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(slr)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-slrplots" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="02-introduction_ANOVA_regression_files/figure-html/fig-slrplots-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3.10: The variables x and y have no correlation</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Despite the violation of assumptions, let’s continue examining the output from this regression in order to practice our interpretation of it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(slr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Sale_Price ~ Gr_Liv_Area, data = train)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-478762  -30030   -1405   22273  335855 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 14045.872   3942.503   3.563 0.000375 ***
+Gr_Liv_Area   110.726      2.506  44.185  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 57430 on 2049 degrees of freedom
+Multiple R-squared:  0.4879,    Adjusted R-squared:  0.4877 
+F-statistic:  1952 on 1 and 2049 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The first thing we’re likely to examine in the coefficient table is the p-value for <code>Gr_Liv_Area</code>. It is strongly significant (in fact, it’s the same t-value and p-value as we saw for the <code>cor.test</code> as these tests are mathematically equivalent), indicating that there is an association between the size of the home and the sale price. Furthermore, the <em>parameter estimate</em> is 115.5 indicating that we’d expect the price of a home to increase by $115.5 for every additional square foot of living space. Because of the linearity of the model, we can extend this slope estimate to any unit change in <span class="math inline">\(x\)</span>. For example, it might be difficult to think in terms of single square feet when comparing houses, so we might prefer to use a 100 square-foot change and report our conclusion as follows: For each additional 100 square feet of living area, we expect the house price to increase by $11,550.</p>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The n-dimensional “variable vectors” and live in the vast <em>sample space</em> where the <span class="math inline">\(i^{th}\)</span> axis represents the <span class="math inline">\(i^th\)</span> observation in your dataset. In this space, a single point/vector is one possible set of sample values of n observations; this space can be difficult to grasp mentally<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</li></ul></li></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01-introduction_statistics.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistics</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./03-complex_ANOVA_Regression.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Complex ANOVA and Multiple Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

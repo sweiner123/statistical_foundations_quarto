@@ -1,0 +1,88 @@
+{
+    "entries": [
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "fig",
+            "id": "qqplot",
+            "suffix": "",
+            "title": "'QQ-Plot: Quantiles of Sale_Price vs. quantiles of a theoretical normal distribution with same mean and standard deviation. Conclusion: Sale_Price is _not_ normally distributed due to a problem with skew.'"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "fig",
+            "id": "rboxplot",
+            "suffix": "",
+            "title": "'Box Plot of Sales Price'"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "fig",
+            "id": "bimodal",
+            "suffix": "",
+            "title": "Example of a Bimodal Distribution"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "sec",
+            "id": "ci",
+            "suffix": "",
+            "title": "Confidence Intervals"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "sec",
+            "id": "testnorm",
+            "suffix": "",
+            "title": "Testing Normality of Groups"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "sec",
+            "id": "intro-stat",
+            "suffix": "",
+            "title": "Introduction to Statistics"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "sec",
+            "id": "ftest",
+            "suffix": "",
+            "title": "Testing Equality of Variances"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "sec",
+            "id": "hypotest",
+            "suffix": "",
+            "title": "Hypothesis Testing"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "sec",
+            "id": "tsttest",
+            "suffix": "",
+            "title": "Testing Equality of Means"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "fig",
+            "id": "histwithkernal",
+            "suffix": "",
+            "title": "'Histogram of Sale_Price with kernal density estimator'"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "fig",
+            "id": "skewdiagram",
+            "suffix": "",
+            "title": "Examples of Left-Skewed (Negative Skew) and Right-skewed (Positive Skew) distributions respectively"
+        },
+        {
+            "file": "01-introduction_statistics.qmd",
+            "type": "sec",
+            "id": "wilcoxon",
+            "suffix": "",
+            "title": "Mann-Whitney-Wilcoxon Test"
+        }
+    ]
+}

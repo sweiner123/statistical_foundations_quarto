@@ -1,0 +1,26 @@
+{
+  "index.qmd": {
+    "index.html": "3e30e616"
+  },
+  "01-introduction_statistics.qmd": {
+    "01-introduction_statistics.html": "baad0f72"
+  },
+  "02-introduction_ANOVA_regression.qmd": {
+    "02-introduction_ANOVA_regression.html": "949749e8"
+  },
+  "03-complex_ANOVA_Regression.qmd": {
+    "03-complex_ANOVA_Regression.html": "d51e0980"
+  },
+  "04-model_selection.qmd": {
+    "04-model_selection.html": "d0024c91"
+  },
+  "05-diagnostics.qmd": {
+    "05-diagnostics.html": "fbf23bc9"
+  },
+  "06-model_building_scoring.qmd": {
+    "06-model_building_scoring.html": "3964ad93"
+  },
+  "07-categorical.qmd": {
+    "07-categorical.html": "85a11f02"
+  }
+}

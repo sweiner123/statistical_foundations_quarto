@@ -1,0 +1,18 @@
+{
+    "entries": [
+        {
+            "file": "03-complex_ANOVA_Regression.qmd",
+            "type": "tbl",
+            "id": "centralair",
+            "suffix": "",
+            "title": "Reference variable coding for the categorical attribute Central Air"
+        },
+        {
+            "file": "03-complex_ANOVA_Regression.qmd",
+            "type": "tbl",
+            "id": "centralaireff",
+            "suffix": "",
+            "title": "Effects variable coding for the categorical attribute Central Air"
+        }
+    ]
+}

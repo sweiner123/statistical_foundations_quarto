@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Statistical Foundations - 7&nbsp; Model Building &amp; Scoring for Prediction</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-categorical.html" rel="next">
+<link href="./05-diagnostics.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model Building &amp; Scoring for Prediction</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Statistical Foundations</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Statistical Foundations</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-introduction_statistics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to Statistics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-introduction_ANOVA_regression.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to ANOVA and Linear Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-complex_ANOVA_Regression.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Complex ANOVA and Multiple Linear Regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-model_selection.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model Selection</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-diagnostics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Diagnostics</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-model_building_scoring.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model Building &amp; Scoring for Prediction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-categorical.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Categorical Data Analysis</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#regularized-regression" id="toc-regularized-regression" class="nav-link active" data-scroll-target="#regularized-regression"><span class="toc-section-number">7.1</span>  Regularized Regression</a>
+  <ul class="collapse">
+  <li><a href="#penalties-in-models" id="toc-penalties-in-models" class="nav-link" data-scroll-target="#penalties-in-models"><span class="toc-section-number">7.1.1</span>  Penalties in Models</a></li>
+  <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression"><span class="toc-section-number">7.1.2</span>  Ridge Regression</a></li>
+  <li><a href="#lasso" id="toc-lasso" class="nav-link" data-scroll-target="#lasso"><span class="toc-section-number">7.1.3</span>  LASSO</a></li>
+  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net"><span class="toc-section-number">7.1.4</span>  Elastic Net</a></li>
+  </ul></li>
+  <li><a href="#optimizing-penalties" id="toc-optimizing-penalties" class="nav-link" data-scroll-target="#optimizing-penalties"><span class="toc-section-number">7.2</span>  Optimizing Penalties</a>
+  <ul class="collapse">
+  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation"><span class="toc-section-number">7.2.1</span>  Cross-Validation</a></li>
+  <li><a href="#cv-in-regularized-regression" id="toc-cv-in-regularized-regression" class="nav-link" data-scroll-target="#cv-in-regularized-regression"><span class="toc-section-number">7.2.2</span>  CV in Regularized Regression</a></li>
+  </ul></li>
+  <li><a href="#model-comparisons" id="toc-model-comparisons" class="nav-link" data-scroll-target="#model-comparisons"><span class="toc-section-number">7.3</span>  Model Comparisons</a>
+  <ul class="collapse">
+  <li><a href="#model-metrics" id="toc-model-metrics" class="nav-link" data-scroll-target="#model-metrics"><span class="toc-section-number">7.3.1</span>  Model Metrics</a></li>
+  <li><a href="#test-dataset-comparison" id="toc-test-dataset-comparison" class="nav-link" data-scroll-target="#test-dataset-comparison"><span class="toc-section-number">7.3.2</span>  Test Dataset Comparison</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="model" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model Building &amp; Scoring for Prediction</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Chapters <a href="#sec-slr"><span class="quarto-unresolved-ref">sec-slr</span></a> and <a href="#sec-mlr"><span class="quarto-unresolved-ref">sec-mlr</span></a> only scratch the surface of model building. Linear regression is a great initial approach to take to model building. In fact, in the realm of statistical models, linear regression (calculated by ordinary least squares) is the <strong>best linear unbiased estimator</strong>. The two key pieces to that previous statement are “best” and “unbiased.”</p>
+<p>What does it mean to be <strong>unbiased</strong>? Each of the sample coefficients (<span class="math inline">\(\hat{\beta}\)</span>’s) in the regression model are estimates of the true coefficients. Just like the statistics back in Chapter <a href="#sec-eda"><span class="quarto-unresolved-ref">sec-eda</span></a>, these sample coefficients have sampling distributions - specifically, normally distributed sampling distributions. The mean of the sampling distribution of <span class="math inline">\(\hat{\beta}_j\)</span> is the true (known) coefficient <span class="math inline">\(\beta_j\)</span>. This means the coefficient is unbiased.</p>
+<p>In the preceding chapters, we have only scratched the surface of model building. Linear regression is a great initial approach to model building. In fact, in the realm of statistical models, linear regression (calculated by ordinary least squares) is the <strong>best linear unbiased estimator</strong>. The two key pieces to that previous statement are “best” and “unbiased.”</p>
+<p>What does it mean to be <strong>unbiased</strong>? Each of the sample coefficients (<span class="math inline">\(\hat{\beta}\)</span>’s) in the regression model are estimates of the true coefficients. Just like the statistics back in Chapter <a href="#sec-intro-stat"><span class="quarto-unresolved-ref">sec-intro-stat</span></a>, these sample coefficients have sampling distributions - specifically, normally distributed sampling distributions. The mean of the sampling distribution of <span class="math inline">\(\hat{\beta}_j\)</span> is the true (known) coefficient <span class="math inline">\(\beta_j\)</span>. This means the coefficient is unbiased.</p>
+<p>What does it mean to be <strong>best</strong>? <em>IF</em> the assumptions of ordinary least squares are met fully, then the sampling distributions of the coefficients in the model have the <strong>minimum</strong> variance of all unbiased estimators.</p>
+<p>These two things combined seem like what we want in a model - estimating what we want (unbiased) and doing it in a way that has the minimum amount of variation (best among the unbiased). Again, these rely on the assumptions of linear regression holding true. Another approach to regression would be to use <strong>regularized regression</strong> instead as a different approach to building the model.</p>
+<p>This Chapter aims to answer the following questions:</p>
+<ul>
+<li>
+<p>What is regularized regression?</p>
+<ul>
+<li>
+<p>Penalties in Modeling</p>
+</li><li>
+<p>Ridge Regression</p>
+</li><li>
+<p>LASSO</p>
+</li><li>
+<p>Elastic Net</p>
+</li></ul>
+</li><li>
+<p>How do you optimize the penalty term?</p>
+<ul>
+<li>
+<p>Overfitting</p>
+</li><li>
+<p>Cross-Validation (CV)</p>
+</li><li>
+<p>CV in Regularized Regression</p>
+</li></ul>
+</li><li>
+<p>How do you compare different types of models?</p>
+<ul>
+<li>
+<p>Model Metric</p>
+</li><li>
+<p>Model Scoring</p>
+</li><li>
+<p>Test Dataset Comparison</p>
+</li></ul>
+</li></ul>
+<section id="regularized-regression" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="regularized-regression"><span class="header-section-number">7.1</span> Regularized Regression</h2>
+<p>As the number of variables in a linear regression model increase, the chances of having a model that meets all of the assumptions starts to diminish. Multicollinearity can pose a large problem with bigger regression models. As previously seen in Chapter <a href="#sec-diag"><span class="quarto-unresolved-ref">sec-diag</span></a>, the coefficients of a linear regression vary widely in the presence of multicollinearity. These variations lead to overfitting of a regression model. <strong>Overfitting</strong> occurs when a dataset predicts the training data it was built off of really well, but does not generalize to the test dataset or the population in general. More formally, these models have higher variance than desired. In those scenarios, moving out of the realm of unbiased estimates may provide a lower variance in the model, even though the model is no longer unbiased as described above. We wouldn’t want to be too biased, but some small degree of bias might improve the model’s fit overall.</p>
+<p>Another potential problem for linear regression is when we have more variables than observations in our dataset. This is a common problem in the space of genetic modeling. In this scenario, the ordinary least squares approach leads to multiple solutions instead of just one. Unfortunately, most of these infinite solutions overfit the problem at hand anyway.</p>
+<p>Regularized (or penalized or shrinkage) regression techniques potentially alleviate these problems. Regularized regression puts constraints on the estimated coefficients in our model and <em>shrink</em> these estimates to zero. This helps reduce the variation in the coefficients (improving the variance of the model), but at the cost of biasing the coefficients. The specific constraints that are put on the regression inform the three common approaches - <strong>ridge regression</strong>, <strong>LASSO</strong>, and <strong>elastic nets</strong>.</p>
+<section id="penalties-in-models" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="penalties-in-models"><span class="header-section-number">7.1.1</span> Penalties in Models</h3>
+<p>In ordinary least squares linear regression, we minimize the sum of the squared residuals (or errors) as laid out in Chapter <a href="#sec-slr"><span class="quarto-unresolved-ref">sec-slr</span></a>.</p>
+<p>In ordinary least squares linear regression, we minimize the sum of the squared residuals (or errors) as laid out in Chapter <a href="#sec-slr"><span class="quarto-unresolved-ref">sec-slr</span></a>.</p>
+<p><span class="math display">\[
+min(\sum_{i=1}^n(y_i - \hat{y}_i)^2) = min(SSE)
+\]</span></p>
+<p>In regularized regression, however, we add a penalty term to the <span class="math inline">\(SSE\)</span> as follows:</p>
+<p><span class="math display">\[
+min(\sum_{i=1}^n(y_i - \hat{y}_i)^2 + Penalty) = min(SSE + Penalty)
+\]</span></p>
+<p>As mentioned above, the penalties we choose constrain the estimated coefficients in our model and shrink these estimates to zero. Different penalties have different effects on the estimated coefficients. Two common approaches to adding penalties are the ridge and LASSO approaches. The elastic net approach is a combination of these two. Let’s explore each of these in further detail!</p>
+</section>
+<section id="ridge-regression" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="ridge-regression"><span class="header-section-number">7.1.2</span> Ridge Regression</h3>
+<p>Ridge regression adds what is commonly referred to as an “<span class="math inline">\(L_2\)</span>” penalty:</p>
+<p><span class="math display">\[
+min(\sum_{i=1}^n(y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^p \hat{\beta}^2_j) = min(SSE + \lambda \sum_{j=1}^p \hat{\beta}^2_j)
+\]</span></p>
+<p>This penalty is controlled by the <strong>tuning parameter</strong> <span class="math inline">\(\lambda\)</span>. If <span class="math inline">\(\lambda = 0\)</span>, then we have typical OLS linear regression. However, as <span class="math inline">\(\lambda \rightarrow \infty\)</span>, the coefficients in the model shrink to zero. This makes intuitive sense. Since the estimated coefficients, <span class="math inline">\(\hat{\beta}_j\)</span>’s, are the only thing changing to minimize this equation, then as <span class="math inline">\(\lambda \rightarrow \infty\)</span>, the equation is best minimized by forcing the coefficients to be smaller and smaller. We will see how to optimize this penalty term in a later section.</p>
+<p>Let’s build a regularized regression for our Ames dataset. To build a ridge regression we need separate data matrices for our predictors and our target variable. First, we isolate out the variables we are interested in using the <code>select</code> function. From there the <code>model.matrix</code> function will create any categorical dummy variables needed. We also isolate the target variable into its own vector.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AmesHousing)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">make_ordinal_ames</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> ames <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>())</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> ames <span class="sc">%&gt;%</span> <span class="fu">sample_frac</span>(<span class="fl">0.7</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">anti_join</span>(ames, train, <span class="at">by =</span> <span class="st">'id'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>train_reg <span class="ot">&lt;-</span> train <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Sale_Price, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>         Lot_Area,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>         Street,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>         Bldg_Type,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         House_Style,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         Overall_Qual,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>         Roof_Style,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>         Central_Air,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>         First_Flr_SF,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>         Second_Flr_SF,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>         Full_Bath,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>         Half_Bath,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>         Fireplaces,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>         Garage_Area,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>         Gr_Liv_Area, </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>         TotRms_AbvGrd) <span class="sc">%&gt;%</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>train_x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Sale_Price <span class="sc">~</span> ., <span class="at">data =</span> train_reg)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>train_y <span class="ot">&lt;-</span> train_reg<span class="sc">$</span>Sale_Price</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will want to do the same thing for the test dataset as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>test_reg <span class="ot">&lt;-</span> test <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Sale_Price, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>         Lot_Area,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>         Street,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>         Bldg_Type,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>         House_Style,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>         Overall_Qual,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>         Roof_Style,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>         Central_Air,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>         First_Flr_SF,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>         Second_Flr_SF,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>         Full_Bath,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>         Half_Bath,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>         Fireplaces,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>         Garage_Area,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>         Gr_Liv_Area, </span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>         TotRms_AbvGrd) <span class="sc">%&gt;%</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace</span>(<span class="fu">is.na</span>(.), <span class="dv">0</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>test_x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Sale_Price <span class="sc">~</span> ., <span class="at">data =</span> test_reg)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>test_y <span class="ot">&lt;-</span> test_reg<span class="sc">$</span>Sale_Price</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>From there we use the <code>glmnet</code> function with the <code>x =</code> option where we specify the predictor model matrix and the <code>y =</code> option where we specify the target variable. The <code>alpha = 0</code> option specifies that a ridge regression will be used as defined in more detail below in the elastic net section. The <code>plot</code> function allows us to see the impact of the penalty on the coefficients in the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ames_ridge <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(<span class="at">x =</span> train_x,  <span class="at">y =</span> train_y,  <span class="at">alpha =</span> <span class="dv">0</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_ridge, <span class="at">xvar =</span> <span class="st">"lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="06-model_building_scoring_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The <code>glmnet</code> function automatically standardizes the variables before fitting the regression model. This is important so that all of the variables are on the same scale before adjustments are made to the estimated coefficients. Even with this standardization we can see the large coefficient values for some of the variables. The top of the plot lists how many variables are in the model at each value of penalty. This will never change for ridge regression, but does for LASSO.</p>
+<p>What <span class="math inline">\(\lambda\)</span> term is best? That will be discussed in the optimizing section below, but let’s discuss other possible penalties first.</p>
+</section>
+<section id="lasso" class="level3" data-number="7.1.3">
+<h3 data-number="7.1.3" class="anchored" data-anchor-id="lasso"><span class="header-section-number">7.1.3</span> LASSO</h3>
+<p><strong>Least absolute shrinkage and selection operator</strong> (LASSO) regression adds what is commonly referred to as an “<span class="math inline">\(L_1\)</span>” penalty:</p>
+<p><span class="math display">\[
+min(\sum_{i=1}^n(y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^p |\hat{\beta}_j|) = min(SSE + \lambda \sum_{j=1}^p |\hat{\beta}_j|)
+\]</span></p>
+<p>This penalty is controlled by the <strong>tuning parameter</strong> <span class="math inline">\(\lambda\)</span>. If <span class="math inline">\(\lambda = 0\)</span>, then we have typical OLS linear regression. However, as <span class="math inline">\(\lambda \rightarrow \infty\)</span>, the coefficients in the model shrink to zero. This makes intuitive sense. Since the estimated coefficients, <span class="math inline">\(\hat{\beta}_j\)</span>’s, are the only thing changing to minimize this equation, then as <span class="math inline">\(\lambda \rightarrow \infty\)</span>, the equation is best minimized by forcing the coefficients to be smaller and smaller. We will see how to optimize this penalty term in a later section.</p>
+<p>However, unlike ridge regression that has the coefficient estimates approach zero asymptotically, in LASSO regression the coefficients can actually equal zero. This may not be as intuitive when initially looking at the penalty terms themselves. It becomes easier to see when dealing with the solutions to the coefficient estimates. Without going into too much mathematical detail, this is done by taking the derivative of the minimization function (objective function) and setting it equal to zero. From there we can determine the optimal solution for the estimated coefficients. In OLS regression the estimates for the coefficients can be shown to equal the following (in matrix form):</p>
+<p><span class="math display">\[
+\hat{\beta} = (X^TX)^{-1}X^TY
+\]</span></p>
+<p>This changes in the presence of penalty terms. For ridge regression, the solution becomes the following:</p>
+<p><span class="math display">\[
+\hat{\beta} = (X^TX + \lambda I)^{-1}X^TY
+\]</span></p>
+<p>There is no value for <span class="math inline">\(\lambda\)</span> that can force the coefficients to be zero by itself. Therefore, unless the data makes the coefficient zero, the penalty term can only force the estimated coefficient to zero asymptotically as <span class="math inline">\(\lambda \rightarrow \infty\)</span>.</p>
+<p>However, for LASSO, the solution becomes the following:</p>
+<p><span class="math display">\[
+\hat{\beta} = (X^TX)^{-1}(X^TY - \lambda I)
+\]</span></p>
+<p>Notice the distinct difference here. In this scenario, there is a possible penalty value (<span class="math inline">\(\lambda = X^TY\)</span>) that will force the estimated coefficients to equal zero. There is some benefit to this. This makes LASSO also function as a variable selection criteria as well.</p>
+<p>Let’s build a regularized regression for our Ames dataset using the LASSO approach. To build a LASSO regression we need separate data matrices for our predictors and our target variable just like we did for ridge. From there we use the <code>glmnet</code> function with the <code>x =</code> option where we specify the predictor model matrix and the <code>y =</code> option where we specify the target variable. The <code>alpha = 1</code> option specifies that a LASSO regression will be used as defined in more detail below in the elastic net section. The <code>plot</code> function allows us to see the impact of the penalty on the coefficients in the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ames_lasso <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(<span class="at">x =</span> train_x,  <span class="at">y =</span> train_y,  <span class="at">alpha =</span> <span class="dv">1</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_lasso, <span class="at">xvar =</span> <span class="st">"lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="06-model_building_scoring_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The <code>glmnet</code> function automatically standardizes the variables before fitting the regression model. This is important so that all of the variables are on the same scale before adjustments are made to the estimated coefficients. Even with this standardization we can see the large coefficient values for some of the variables. The top of the plot lists how many variables are in the model at each value of penalty. Notice as the penalty increases, the number of variables decreases as variables are forced to zero.</p>
+<p>What <span class="math inline">\(\lambda\)</span> term is best? That will be discussed in the optimizing section below, but let’s discuss the last possible penalty first - the combination of both ridge and LASSO.</p>
+</section>
+<section id="elastic-net" class="level3" data-number="7.1.4">
+<h3 data-number="7.1.4" class="anchored" data-anchor-id="elastic-net"><span class="header-section-number">7.1.4</span> Elastic Net</h3>
+<p>Which approach is better, ridge or LASSO? Both have advantages and disadvantages. LASSO performs variable selection while ridge keeps all variables in the model. However, reducing the number of variables might impact minimum error. Also, if you have two correlated variables, which one LASSO chooses to zero out is relatively arbitrary to the context of the problem.</p>
+<p>Elastic nets were designed to take advantage of both penalty approaches. In elastic nets, we are using both penalties in the minimization:</p>
+<p><span class="math display">\[
+min(SSE + \lambda_1 \sum_{j=1}^p |\hat{\beta}_j| + \lambda_2 \sum_{j=1}^p \hat{\beta}^2_j)
+\]</span></p>
+<p>In R, the <code>glmnet</code> function takes a slightly different approach to the elastic net implementation with the following:</p>
+<p><span class="math display">\[
+min(SSE + \lambda[ \alpha \sum_{j=1}^p |\hat{\beta}_j| + (1-\alpha) \sum_{j=1}^p \hat{\beta}^2_j])
+\]</span></p>
+<p>R still has one penalty <span class="math inline">\(\lambda\)</span>, however, it includes the <span class="math inline">\(\alpha\)</span> parameter to balance between the two penalty terms. This is why in <code>glmnet</code>, the <code>alpha = 1</code> option gives a LASSO regression and <code>alpha = 0</code> gives a ridge regression. Any value in between zero and one will provide an elastic net.</p>
+<p>Let’s build a regularized regression for our Ames dataset using the elastic net approach with an <span class="math inline">\(\alpha = 0.5\)</span>. To build am elastic net we need separate data matrices for our predictors and our target variable just like we did for ridge and LASSO. From there we use the <code>glmnet</code> function with the <code>x =</code> option where we specify the predictor model matrix and the <code>y =</code> option where we specify the target variable. The <code>alpha = 0.5</code> option specifies that an elastic net will be used since it is between zero and one. The <code>plot</code> function allows us to see the impact of the penalty on the coefficients in the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ames_en <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(<span class="at">x =</span> train_x,  <span class="at">y =</span> train_y,  <span class="at">alpha =</span> <span class="fl">0.5</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_en, <span class="at">xvar =</span> <span class="st">"lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="06-model_building_scoring_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The <code>glmnet</code> function automatically standardizes the variables before fitting the regression model. This is important so that all of the variables are on the same scale before adjustments are made to the estimated coefficients. Even with this standardization we can see the large coefficient values for some of the variables. The top of the plot lists how many variables are in the model at each value of penalty. Notice as the penalty increases, the number of variables decreases as variables are forced to zero using the LASSO piece of the elastic net penalty.</p>
+<p>What <span class="math inline">\(\lambda\)</span> term is best? What is the proper balance between ridge and LASSO penalties when building an elastic net? That will be discussed in the following section.</p>
+</section>
+</section>
+<section id="optimizing-penalties" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="optimizing-penalties"><span class="header-section-number">7.2</span> Optimizing Penalties</h2>
+<p>No matter the approach listed above, a penatly term <span class="math inline">\(\lambda\)</span> needs to be picked. However, we do not want to get caught overfitting our training data by minimizing the variance so much that it is not generalizable to the overall pattern and other similar data. Take the following plot:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="06-model_building_scoring_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The red line is overfitted to the dataset and picks up too much of the unimportant pattern. The orange dotted line is underfit as it does not pick up enough of the pattern. The light blue, solid line is fit well to the dataset as it picks up the general pattern while not overfitting to the dataset.</p>
+<section id="cross-validation" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="cross-validation"><span class="header-section-number">7.2.1</span> Cross-Validation</h3>
+<p><strong>Cross-validation</strong> is a common approach in modeling to prevent overfitting of data when you need to <strong>tune</strong> a parameter. The idea of cross-validation is to split the training data into multiple pieces, build the model on a majority of the pieces while evaluating it on the remaining piece. Then we do the same process again, but switch out which pieces the model is built and evaluated on.</p>
+<p>A common cross-validation (CV) approach is the <span class="math inline">\(k\)</span>-fold CV. In the <span class="math inline">\(k\)</span>-fold CV approach, the model is built <span class="math inline">\(k\)</span> times. The data is initially split into <span class="math inline">\(k\)</span> equally sized pieces. Each time the model is built, it is built off of <span class="math inline">\(k-1\)</span> pieces of the data and evaluated on the last piece. This process is repeated until each piece is left out for evaluation. This is diagrammed below in Figure <a href="#fig-kCV">Figure&nbsp;<span class="quarto-unresolved-ref">fig-kCV</span></a>.</p>
+<div id="fig-kCV" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="img/kCV.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;7.1: Example of a 10-fold Cross-Validation</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="cv-in-regularized-regression" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="cv-in-regularized-regression"><span class="header-section-number">7.2.2</span> CV in Regularized Regression</h3>
+<p>In R, the <code>cv.glmnet</code> function will automatically implement a 10-fold CV (by default, but can be adjusted through options) to help evaluate and optimize the <span class="math inline">\(\lambda\)</span> values for our regularized regression models.</p>
+<p>Let’s perform an example using the LASSO regression. The <code>cv.glmnet</code> function takes the same inputs as the <code>glmnet</code> function above. Again, we will use the <code>plot</code> function, but this time we get a different plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ames_lasso_cv <span class="ot">&lt;-</span> <span class="fu">cv.glmnet</span>(<span class="at">x =</span> train_x,  <span class="at">y =</span> train_y,  <span class="at">alpha =</span> <span class="dv">1</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_lasso_cv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="06-model_building_scoring_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ames_lasso_cv<span class="sc">$</span>lambda.min </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 41.25712</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ames_lasso_cv<span class="sc">$</span>lambda<span class="fl">.1</span>se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3588.334</code></pre>
+</div>
+</div>
+<p>The above plot shows the results from our cross-validation. Here the models are evaluated based on their <strong>mean-squared error</strong> (MSE). The MSE is defined as <span class="math inline">\(\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2\)</span>. The <span class="math inline">\(\lambda\)</span> value that minimizes the MSE is 49.69435 (with a <span class="math inline">\(\log(\lambda)\)</span> = 3.91). This is highlighted by the first, vertical dashed line. The second vertical dashed line is the largest <span class="math inline">\(\lambda\)</span> value that is one standard error above the minimum value. This value is especially useful in LASSO regressions. The largest <span class="math inline">\(\lambda\)</span> within one standard error would provide approximately the same MSE, but with a further reduction in the number of variables. Notice that to go from the first line to the second, the change in MSE is very small, but the reduction of variables is from 36 variables to around 12 variables.</p>
+<p>Let’s look at the impact on the coefficients under this penalty using the <code>glmnet</code> function as before.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_lasso, <span class="at">xvar =</span> <span class="st">"lambda"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">log</span>(ames_lasso_cv<span class="sc">$</span>lambda<span class="fl">.1</span>se), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="st">"dashed"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="fu">log</span>(ames_lasso_cv<span class="sc">$</span>lambda.min), <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">lty =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="06-model_building_scoring_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>To investigate which variables are important at a <span class="math inline">\(\lambda\)</span> value, we can view the coefficients using the <code>coef</code> function. They are ranked here:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(ames_lasso, <span class="at">s =</span> ames_lasso_cv<span class="sc">$</span>lambda<span class="fl">.1</span>se) <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="st">"row"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(row <span class="sc">!=</span> <span class="st">"(Intercept)"</span>, s1 <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(s1, <span class="fu">reorder</span>(row, s1))) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Influential Variables"</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Coefficient"</span>) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="06-model_building_scoring_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The variable describing the overall quality of the home is the driving factor of this model as well as the other variables listed above.</p>
+<p>A similar approach can be taken for CV with ridge regression using the same structure of code. That will not be covered here. Elastic nets are more complicated in that they have multiple parameters to optimize. For that approach, an optimization grid will need to be structured to evaluate different <span class="math inline">\(\lambda\)</span> values across different <span class="math inline">\(\alpha\)</span> values. A loop can be set up to run the <code>cv.glmnet</code> function across many different values of <span class="math inline">\(\alpha\)</span>. That will not be covered in detail here.</p>
+</section>
+</section>
+<section id="model-comparisons" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="model-comparisons"><span class="header-section-number">7.3</span> Model Comparisons</h2>
+<p>Now we have multiple models built for our dataset. To help evaluate which model is better, we will use the test dataset as described in Chapter <a href="#sec-slr"><span class="quarto-unresolved-ref">sec-slr</span></a>.</p>
+<p>The models we have built are nothing but formulas. All we have to do is put the test dataset in the formula to predict/score the test data. We <strong>do not</strong> rerun the algorithm as the goal is <strong>not</strong> to fit the test dataset, but to just score it. We need to make sure that we have the same structure to the test dataset that we do with the training dataset. Any variable transformations, new variable creations, and missing value imputations done on the training dataset must be done on the test dataset in the same way.</p>
+<section id="model-metrics" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="model-metrics"><span class="header-section-number">7.3.1</span> Model Metrics</h3>
+<p>Once the predicted values are obtained from each model we need to evaluate good these predictions are. There are many different metrics to evaluate models depending on what type of target variable that you have. Some common metrics for continuous target variables are the square root of the mean squared error (RMSE), the mean absolute error (MAE), and mean absolute percentage error (MAPE).</p>
+<p>The RMSE is evaluated as follows:</p>
+<p><span class="math display">\[
+RMSE = \sqrt {\frac{1}{n} \sum_{i=1}^n (y_i - \hat{y}_i)^2}
+\]</span> The RMSE is an approximation of the standard deviation of the prediction errors of the model. The downside of the RMSE is a lack of interpretability.</p>
+<p>The MAE is evaluated as follows:</p>
+<p><span class="math display">\[
+MAE = \frac{1}{n} \sum_{i=1}^n |y_i - \hat{y}_i|
+\]</span> The MAE gives the average absolute difference between our predictions and the actual values. This is a symmetric measure with great interpretability. The main disadvantage of this metric is that it depends on the scale of the data. For comparing two models evaluated on the same data, this isn’t important. However, when comparing across different datasets, this may not be as helpful. For example, in temperature predictions, having an MAE of five degrees for a model built on Honolulu, Hawaii weather might not be comparable to a model built on weather in Raleigh, North Carolina.</p>
+<p>The MAPE is evaluated as follows:</p>
+<p><span class="math display">\[
+MAPE = 100 \times \frac{1}{n} \sum_{i=1}^n |\frac{y_i - \hat{y}_i}{y_i}|
+\]</span> The MAPE gives the average absolute <em>percentage</em> difference between our predictions and the actual values. This metric is very interpretable and not dependent on the scale of the data. However, it is not symmetric like the MAE.</p>
+</section>
+<section id="test-dataset-comparison" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="test-dataset-comparison"><span class="header-section-number">7.3.2</span> Test Dataset Comparison</h3>
+<p>The final model we had from Chapter <a href="#sec-diag"><span class="quarto-unresolved-ref">sec-diag</span></a> had the variables . From this model we can use the <code>predict</code> function with the <code>newdata =</code> option to use score the <code>test</code> dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ames_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(Sale_Price <span class="sc">~</span> Overall_Qual <span class="sc">+</span> House_Style <span class="sc">+</span> Garage_Area <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    Fireplaces <span class="sc">+</span> Full_Bath <span class="sc">+</span> Half_Bath <span class="sc">+</span> Lot_Area <span class="sc">+</span> Roof_Style <span class="sc">+</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    Central_Air <span class="sc">+</span> Second_Flr_SF <span class="sc">+</span> TotRms_AbvGrd <span class="sc">+</span> First_Flr_SF, <span class="at">data =</span> train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>test<span class="sc">$</span>pred_lm <span class="ot">&lt;-</span> <span class="fu">predict</span>(ames_lm, <span class="at">newdata =</span> test)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(test<span class="sc">$</span>pred_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2        3        4        5        6 
+166099.4 178687.2 233354.4 111583.7 215426.7 129492.1 </code></pre>
+</div>
+</div>
+<p>To get predictions from the regularized regression models, a <span class="math inline">\(\lambda\)</span> value must be selected. For the previous LASSO regression we will choose the largest <span class="math inline">\(\lambda\)</span> value within one standard error of the minimum <span class="math inline">\(\lambda\)</span> value to help reduce the number of variables. Again, we will use the <code>predict</code> function. The <code>s =</code> option is where we input the <span class="math inline">\(\lambda\)</span> value. The <code>newx =</code> option is where we specify the <code>test</code> dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>test_reg<span class="sc">$</span>pred_lasso <span class="ot">&lt;-</span> <span class="fu">predict</span>(ames_lasso, <span class="at">s =</span> ames_lasso_cv<span class="sc">$</span>lambda<span class="fl">.1</span>se, <span class="at">newx =</span> test_x)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(test_reg<span class="sc">$</span>pred_lasso)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        s1
+1 156677.8
+2 172432.5
+3 239922.1
+4 105713.6
+5 200908.8
+6 124913.5</code></pre>
+</div>
+</div>
+<p>Now we need to calculate the MAE and MAPE for each model for comparison.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>test <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lm_APE =</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">abs</span>((Sale_Price <span class="sc">-</span> pred_lm)<span class="sc">/</span>Sale_Price)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">MAPE_lm =</span> <span class="fu">mean</span>(lm_APE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  MAPE_lm
+    &lt;dbl&gt;
+1    12.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>test_reg <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lasso_APE =</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">abs</span>((Sale_Price <span class="sc">-</span> pred_lasso)<span class="sc">/</span>Sale_Price)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">MAPE_lasso =</span> <span class="fu">mean</span>(lasso_APE))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  MAPE_lasso
+       &lt;dbl&gt;
+1       13.4</code></pre>
+</div>
+</div>
+<p>From the above results, the linear regression from LASSO has a lower MAPE.</p>
+<p>Once we have scored models with the test dataset, we should <strong>not</strong> go back to try and rebuild any models. We will use the model with the lowest MAE or MAPE. This number is also the number that we report on how well our model performs. No metrics on the training dataset should be reported for the performance of the model.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./05-diagnostics.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Diagnostics</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-categorical.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Categorical Data Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
